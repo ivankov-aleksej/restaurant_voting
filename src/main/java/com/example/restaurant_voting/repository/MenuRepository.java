@@ -23,14 +23,14 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
 
     @Query(value = "SELECT m FROM Menu m LEFT JOIN FETCH m.dishes LEFT JOIN FETCH m.restaurant WHERE m.actionDate=:date",
             countQuery = "SELECT count(m) FROM Menu m")
-    Page<Menu> findByDate(@Param("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, Pageable pageable);
+    Page<Menu> findByDateWithJoin(@Param("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, Pageable pageable);
 
     @Query("SELECT m FROM Menu m LEFT JOIN FETCH m.dishes LEFT JOIN FETCH m.restaurant WHERE m.id=:id")
-    Optional<Menu> findById(@Param("id") Integer id);
+    Optional<Menu> findByIdWithJoin(@Param("id") Integer id);
 
     //    https://stackoverflow.com/questions/21549480/spring-data-fetch-join-with-paging-is-not-working
     //    https://stackoverflow.com/questions/26901010/spring-data-jpa-eager-fetch-with-join-and-using-pagination-not-working
     @Query(value = "SELECT m FROM Menu m LEFT JOIN FETCH m.dishes LEFT JOIN FETCH m.restaurant",
             countQuery = "SELECT count(m) FROM Menu m")
-    Page<Menu> findAll(Pageable pageable);
+    Page<Menu> findAllWithJoin(Pageable pageable);
 }

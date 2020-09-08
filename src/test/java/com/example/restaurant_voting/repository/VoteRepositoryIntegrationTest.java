@@ -24,7 +24,7 @@ class VoteRepositoryIntegrationTest {
 
     @Test
     void delete() {
-        assertEquals(1, voteRepository.delete(DATE, 1));
+        assertEquals(1, voteRepository.delete(DATE, 100));
     }
 
     @Test
@@ -34,16 +34,16 @@ class VoteRepositoryIntegrationTest {
 
     @Test
     void findAll() {
-        Page<Vote> votes = voteRepository.findAll(PageRequest.of(0, 20), 1);
+        Page<Vote> votes = voteRepository.findAll(PageRequest.of(0, 20), 100);
         assertEquals(2, votes.getContent().size());
     }
 
     @Test
     void findByDate() {
-        List<Vote> votes = voteRepository.findByDate(DATE, 1);
+        List<Vote> votes = voteRepository.findByDate(DATE, 100);
         assertEquals(1, votes.size());
         assertEquals(DATE, votes.get(0).getDate());
-        assertEquals(1, votes.get(0).getUser().getId());
+        assertEquals(100, votes.get(0).getUser().getId());
     }
 
     @Test
@@ -64,10 +64,10 @@ class VoteRepositoryIntegrationTest {
         assertEquals(1, voteTos.getContent().get(2).getCount());
         assertEquals(2, voteTos.getContent().get(3).getCount());
 
-        assertEquals(3, voteTos.getContent().get(0).getMenu().getId());
-        assertEquals(4, voteTos.getContent().get(1).getMenu().getId());
-        assertEquals(1, voteTos.getContent().get(2).getMenu().getId());
-        assertEquals(2, voteTos.getContent().get(3).getMenu().getId());
+        assertEquals(107, voteTos.getContent().get(0).getMenu().getId());
+        assertEquals(108, voteTos.getContent().get(1).getMenu().getId());
+        assertEquals(105, voteTos.getContent().get(2).getMenu().getId());
+        assertEquals(106, voteTos.getContent().get(3).getMenu().getId());
 
     }
 }

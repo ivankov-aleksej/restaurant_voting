@@ -23,7 +23,7 @@ class MenuRepositoryIntegrationTest {
 
     @Test
     void delete() {
-        assertEquals(1, menuRepository.delete(1));
+        assertEquals(1, menuRepository.delete(105));
     }
 
     @Test
@@ -33,16 +33,21 @@ class MenuRepositoryIntegrationTest {
 
     @Test
     void findByName() {
-        Page<Menu> menus = menuRepository.findByDate(DATE, PageRequest.of(0, 20));
+        Page<Menu> menus = menuRepository.findByDateWithJoin(DATE, PageRequest.of(0, 20));
         assertEquals(2, menus.getContent().size());
         menus.getContent().forEach(menu -> assertEquals(DATE, menu.getActionDate()));
-
     }
 
     @Test
     void findByIdWithFetch() {
-        Optional<Menu> menuOptional = menuRepository.findById(1);
+        Optional<Menu> menuOptional = menuRepository.findByIdWithJoin(105);
         assertTrue(menuOptional.isPresent());
         assertEquals(2, menuOptional.get().getDishes().size());
+    }
+
+    @Test
+    void findAllWithFetch() {
+        Page<Menu> menus = menuRepository.findAllWithJoin(PageRequest.of(0, 20));
+        assertEquals(4, menus.getContent().size());
     }
 }

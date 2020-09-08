@@ -1,39 +1,39 @@
-INSERT INTO USERS (EMAIL, PASSWORD)
-VALUES ('admin@gmail.com', 'admin'),
-       ('user1@gmail.com', 'password'),
-       ('user2@gmail.com', 'password');
+INSERT INTO USERS (ID, EMAIL, PASSWORD)
+VALUES (100, 'admin@gmail.com', 'admin'),
+       (101, 'user1@gmail.com', 'password'),
+       (102, 'user2@gmail.com', 'password');
 
 INSERT INTO USER_ROLE (ROLE, USER_ID)
-VALUES ('ROLE_USER', 1),
-       ('ROLE_ADMIN', 1),
-       ('ROLE_USER', 2),
-       ('ROLE_USER', 3);
+VALUES ('ROLE_USER', 100),
+       ('ROLE_ADMIN', 100),
+       ('ROLE_USER', 101),
+       ('ROLE_USER', 102);
 
-INSERT INTO RESTAURANT(NAME)
-VALUES ('McDonalds'),
-       ('Burger King');
+INSERT INTO RESTAURANT("ID", "NAME")
+VALUES (103, 'McDonalds'),
+       (104, 'Burger King');
 
 INSERT INTO MENU(ID, RESTAURANT_ID, ACTION_DATE)
-VALUES (1, 1, '2020-08-01'),
-       (2, 2, '2020-08-01'),
-       (3, 1, '2020-08-02'),
-       (4, 2, '2020-08-02');
+VALUES (105, 103, '2020-08-01'),
+       (106, 104, '2020-08-01'),
+       (107, 103, '2020-08-02'),
+       (108, 104, '2020-08-02');
 
-INSERT INTO DISH(NAME, PRICE, MENU_ID)
-VALUES ('Гамбургер', 1.04, 1),
-       ('Ролл з креветками', 1.54, 1),
-       ('Роял Фреш', 1.14, 2),
-       ('Чикен Ролл', 1.87, 2),
-       ('Гамбургер', 1.14, 3),
-       ('Ролл з креветками', 1.64, 3),
-       ('Роял Фреш', 1.24, 4),
-       ('Чикен Ролл', 1.77, 4);
+INSERT INTO DISH(ID, NAME, PRICE, MENU_ID)
+VALUES (109, 'Гамбургер', 1.04, 105),
+       (110, 'Ролл з креветками', 1.54, 105),
+       (111, 'Роял Фреш', 1.14, 106),
+       (112, 'Чикен Ролл', 1.87, 106),
+       (113, 'Гамбургер', 1.14, 107),
+       (114, 'Ролл з креветками', 1.64, 107),
+       (115, 'Роял Фреш', 1.24, 108),
+       (116, 'Чикен Ролл', 1.77, 108);
 
-INSERT INTO VOTE(MENU_ID, USER_ID, DATE)
-VALUES (1, 1, '2020-08-01'),
-       (2, 2, '2020-08-01'),
-       (2, 3, '2020-08-01'),
-       (3, 1, '2020-08-02'),
-       (3, 2, '2020-08-02'),
-       (4, 3, '2020-08-02');
+INSERT INTO VOTE(ID, MENU_ID, USER_ID, DATE)
+VALUES (117, 105, 100, '2020-08-01'),
+       (118, 106, 101, '2020-08-01'),
+       (119, 106, 102, '2020-08-01'),
+       (120, 107, 100, '2020-08-02'),
+       (121, 107, 101, '2020-08-02'),
+       (122, 108, 102, '2020-08-02');
 

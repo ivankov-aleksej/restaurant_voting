@@ -17,12 +17,12 @@ class RestaurantRepositoryIntegrationTest {
 
     @Test
     void delete() {
-        assertEquals(1, restaurantRepository.delete(1));
+        assertEquals(1, restaurantRepository.delete(103));
     }
 
     @Test
     void deleteNotFound() {
-        assertEquals(0, restaurantRepository.delete(100));
+        assertEquals(0, restaurantRepository.delete(1));
     }
 
     @Test

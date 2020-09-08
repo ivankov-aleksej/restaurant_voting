@@ -21,12 +21,12 @@ class UserRepositoryIntegrationTest {
 
     @Test
     void delete() {
-        assertEquals(1, userRepository.delete(1));
+        assertEquals(1, userRepository.delete(100));
     }
 
     @Test
     void deleteNotFound() {
-        assertEquals(0, userRepository.delete(100));
+        assertEquals(0, userRepository.delete(1));
     }
 
     @Test
