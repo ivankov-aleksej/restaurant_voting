@@ -34,6 +34,9 @@ public class Menu extends AbstractPersistable<Integer> {
     @Future
     private LocalDate actionDate;
 
+    //    https://discourse.hibernate.org/t/hibernate-lazy-mode-doesnt-work-with-spring-boot/1535/6
+    //    spring.jpa.open-in-view=false
+    //    You need to use a JPQL query with JOIN FETCH the lazy associations.
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "menu")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Dish> dishes = new ArrayList<>();
