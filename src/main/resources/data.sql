@@ -4,10 +4,10 @@ VALUES ('admin@gmail.com', 'admin'),
        ('user2@gmail.com', 'password');
 
 INSERT INTO USER_ROLE (ROLE, USER_ID)
-VALUES ('USER', 1),
-       ('ADMIN', 1),
-       ('USER', 2),
-       ('USER', 3);
+VALUES ('ROLE_USER', 1),
+       ('ROLE_ADMIN', 1),
+       ('ROLE_USER', 2),
+       ('ROLE_USER', 3);
 
 INSERT INTO RESTAURANT(NAME)
 VALUES ('McDonalds'),
