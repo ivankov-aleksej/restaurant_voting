@@ -1,5 +1,6 @@
 package com.example.restaurant_voting.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ public class Dish extends BaseEntity {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "menu_id", foreignKey = @ForeignKey(name = "fk_dish_menu_id"))
+    @JsonIgnoreProperties({"dishes", "restaurant"})
     @NotNull
     private Menu menu;
 

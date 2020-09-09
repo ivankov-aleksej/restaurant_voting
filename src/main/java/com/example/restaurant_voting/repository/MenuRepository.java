@@ -18,8 +18,8 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
 
     @Transactional
     @Modifying
-    @Query("DELETE FROM Menu m WHERE m.id=:id")
-    int delete(@Param("id") int id);
+    @Query("DELETE FROM Menu m WHERE m.id=:id AND m.actionDate=:date")
+    int deleteWithDate(@Param("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @Param("id") int id);
 
     @Query(value = "SELECT m FROM Menu m LEFT JOIN FETCH m.dishes LEFT JOIN FETCH m.restaurant WHERE m.actionDate=:date",
             countQuery = "SELECT count(m) FROM Menu m")

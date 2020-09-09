@@ -1,24 +1,31 @@
 package com.example.restaurant_voting.web.rest;
 
+import com.example.restaurant_voting.model.Menu;
 import com.example.restaurant_voting.model.Restaurant;
+import com.example.restaurant_voting.repository.MenuRepository;
 import com.example.restaurant_voting.repository.RestaurantRepository;
+import com.example.restaurant_voting.util.DateUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value = RestaurantController.REST_URL, produces = "application/json")
+@RequestMapping(value = RestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestaurantController {
     static final String REST_URL = "/api/restaurants";
 
     private final RestaurantRepository restaurantRepository;
 
-    public RestaurantController(RestaurantRepository restaurantRepository) {
+    private final MenuRepository menuRepository;
+
+    public RestaurantController(RestaurantRepository restaurantRepository, MenuRepository menuRepository) {
         this.restaurantRepository = restaurantRepository;
+        this.menuRepository = menuRepository;
     }
 
     @GetMapping
@@ -38,9 +45,8 @@ public class RestaurantController {
         Optional<Restaurant> restaurant = restaurantRepository.findById(id);
         if (restaurant.isPresent()) {
             return ResponseEntity.ok(restaurant.get());
-        } else {
-            return ResponseEntity.unprocessableEntity().build();
         }
+        return ResponseEntity.unprocessableEntity().build();
     }
 
     @PostMapping
@@ -59,6 +65,19 @@ public class RestaurantController {
             restaurant.setId(id);
             restaurantRepository.save(restaurant);
             return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.unprocessableEntity().build();
+        }
+    }
+
+    @PostMapping("/{id}/menus")
+    public ResponseEntity<?> createMenu(@PathVariable("id") final Integer id) {
+        Optional<Restaurant> restaurant = restaurantRepository.findById(id);
+        if (restaurant.isPresent()) {
+            Menu menu = new Menu();
+            menu.setActionDate(DateUtil.getTomorrow());
+            menu.setRestaurant(restaurant.get());
+            return ResponseEntity.status(HttpStatus.CREATED).body(menuRepository.save(menu));
         } else {
             return ResponseEntity.unprocessableEntity().build();
         }

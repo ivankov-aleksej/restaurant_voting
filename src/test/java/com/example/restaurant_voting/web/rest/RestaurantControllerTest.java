@@ -5,19 +5,20 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class RestaurantControllerTest extends AbstractControllerTest {
+    static final Integer RESTAURANT_ID = 103;
     private static final String REST_URL = RestaurantController.REST_URL + '/';
     private static final String REST_NAME = REST_URL + "byName?name=kiNG";
     private static final String PACKAGE_JSON = "restaurant/";
-    private static final Integer RESTAURANT_ID = 103;
-
 
     @Test
     void getAll() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(REST_URL))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
@@ -26,6 +27,7 @@ class RestaurantControllerTest extends AbstractControllerTest {
     @Test
     void getByName() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(REST_NAME))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
@@ -34,6 +36,7 @@ class RestaurantControllerTest extends AbstractControllerTest {
     @Test
     void getById() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT_ID))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
@@ -44,6 +47,7 @@ class RestaurantControllerTest extends AbstractControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(readFile(PACKAGE_JSON + "restaurant_create.json")))
+                .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
@@ -52,7 +56,9 @@ class RestaurantControllerTest extends AbstractControllerTest {
 
     @Test
     void delete() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete(REST_URL + RESTAURANT_ID)).andExpect(status().isNoContent());
+        mockMvc.perform(MockMvcRequestBuilders.delete(REST_URL + RESTAURANT_ID))
+                .andDo(print())
+                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -60,6 +66,7 @@ class RestaurantControllerTest extends AbstractControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.put(REST_URL + RESTAURANT_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(readFile(PACKAGE_JSON + "restaurant_update.json")))
+                .andDo(print())
                 .andExpect(status().isNoContent());
     }
 }
