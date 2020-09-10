@@ -1,6 +1,8 @@
 package com.example.restaurant_voting.model;
 
 import com.example.restaurant_voting.View;
+import com.example.restaurant_voting.config.MenuSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +18,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonSerialize(using = MenuSerializer.class)
 @Getter
 @Setter
 @AllArgsConstructor

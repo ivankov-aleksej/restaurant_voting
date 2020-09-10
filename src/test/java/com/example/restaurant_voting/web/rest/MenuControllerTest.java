@@ -21,16 +21,16 @@ class MenuControllerTest extends AbstractControllerTest {
     private static final String REST_URL_BY_DATE = REST_URL + "byDate?date=2020-08-01";
 
     /**
-     * Warning. Remember, delete or update or create only if DATE is FUTURE.
+     * Warning. Remember, delete or update or create only if DATE menu is FUTURE.
      */
+    private final static LocalDate TOMORROW_DATE = LocalDate.parse("2020-08-03");
     private final static LocalDate CURRENT_DATE = LocalDate.parse("2020-08-02");
     private final static LocalDate YESTERDAY_DATE = LocalDate.parse("2020-08-01");
     private final static Integer MENU_ID = 107;
 
     @Test
     void getAll() throws Exception {
-
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL))
+        perform(MockMvcRequestBuilders.get(REST_URL))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content()
@@ -46,7 +46,8 @@ class MenuControllerTest extends AbstractControllerTest {
             mocked.when(DateUtil::getDate).thenReturn(CURRENT_DATE);
             assertEquals(CURRENT_DATE, DateUtil.getDate());
 
-            mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "current"))
+            perform(MockMvcRequestBuilders.get(REST_URL + "current"))
+                    .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(content()
                             .contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
@@ -56,7 +57,7 @@ class MenuControllerTest extends AbstractControllerTest {
 
     @Test
     void getByDate() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL_BY_DATE))
+        perform(MockMvcRequestBuilders.get(REST_URL_BY_DATE))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content()
@@ -65,7 +66,7 @@ class MenuControllerTest extends AbstractControllerTest {
 
     @Test
     void getById() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + MENU_ID))
+        perform(MockMvcRequestBuilders.get(REST_URL + MENU_ID))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content()
@@ -81,7 +82,7 @@ class MenuControllerTest extends AbstractControllerTest {
             mocked.when(DateUtil::getTomorrow).thenReturn(CURRENT_DATE);
             assertEquals(YESTERDAY_DATE, DateUtil.getDate());
 
-            mockMvc.perform(MockMvcRequestBuilders.delete(REST_URL + MENU_ID))
+            perform(MockMvcRequestBuilders.delete(REST_URL + MENU_ID))
                     .andDo(print())
                     .andExpect(status().isNoContent());
         }
@@ -94,9 +95,10 @@ class MenuControllerTest extends AbstractControllerTest {
         assertNotEquals(CURRENT_DATE, DateUtil.getDate());
         try (MockedStatic mocked = mockStatic(DateUtil.class)) {
             mocked.when(DateUtil::getDate).thenReturn(CURRENT_DATE);
+            mocked.when(DateUtil::getTomorrow).thenReturn(TOMORROW_DATE);
             assertEquals(CURRENT_DATE, DateUtil.getDate());
 
-            mockMvc.perform(MockMvcRequestBuilders.post(RestaurantController.REST_URL + "/" + RESTAURANT_ID + "/menus")
+            perform(MockMvcRequestBuilders.post(RestaurantController.REST_URL + "/" + RESTAURANT_ID + "/menus")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content("{}"))
                     .andDo(print())
