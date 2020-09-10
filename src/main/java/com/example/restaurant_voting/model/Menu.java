@@ -1,5 +1,6 @@
 package com.example.restaurant_voting.model;
 
+import com.example.restaurant_voting.View;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"restaurant_id", "action_date"}, name = "restaurant_id_action_date_unique")})
-public class Menu extends BaseEntity {
+public class Menu extends BaseEntity implements Serializable {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "restaurant_id", foreignKey = @ForeignKey(name = "fk_menu_restaurant_id"))
@@ -30,7 +32,7 @@ public class Menu extends BaseEntity {
 
     @Column(name = "action_date", updatable = false, columnDefinition = "DATE DEFAULT CURRENT_DATE")
     @NotNull
-    @Future
+    @Future(groups = View.Persist.class)
     private LocalDate actionDate;
 
     //    https://discourse.hibernate.org/t/hibernate-lazy-mode-doesnt-work-with-spring-boot/1535/6

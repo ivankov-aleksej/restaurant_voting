@@ -9,6 +9,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Getter
@@ -17,7 +18,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"date", "user_id"}, name = "date_user_id_unique")})
-public class Vote extends BaseEntity {
+public class Vote extends BaseEntity implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_vote_user_id"), nullable = false)

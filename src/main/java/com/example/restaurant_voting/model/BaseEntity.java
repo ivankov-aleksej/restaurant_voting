@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.util.ProxyUtils;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 
@@ -21,6 +22,12 @@ public abstract class BaseEntity implements Persistable<Integer> {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
     @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", initialValue = 100, allocationSize = 1)
     protected Integer id;
+
+    // doesn't work for hibernate lazy proxy
+    public int id() {
+        Assert.notNull(id, "Entity must has id");
+        return id;
+    }
 
     @JsonIgnore
     @Override

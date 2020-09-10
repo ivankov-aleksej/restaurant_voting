@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Getter
@@ -15,7 +16,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Dish extends BaseEntity {
+public class Dish extends BaseEntity implements Serializable {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "menu_id", foreignKey = @ForeignKey(name = "fk_dish_menu_id"))
