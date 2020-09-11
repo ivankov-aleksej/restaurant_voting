@@ -11,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Transactional(readOnly = true)
@@ -24,6 +25,9 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
     @Query(value = "SELECT m FROM Menu m LEFT JOIN FETCH m.dishes LEFT JOIN FETCH m.restaurant WHERE m.actionDate=:date",
             countQuery = "SELECT count(m) FROM Menu m")
     Page<Menu> findByDateWithJoin(@Param("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, Pageable pageable);
+
+    @Query(value = "SELECT m FROM Menu m  WHERE m.actionDate=:date AND m.restaurant.id=:id")
+    List<Menu> findByDateWithRestaurantId(@Param("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @Param("id") Integer id);
 
     @Query("SELECT m FROM Menu m LEFT JOIN FETCH m.dishes LEFT JOIN FETCH m.restaurant WHERE m.id=:id")
     Optional<Menu> findByIdWithJoin(@Param("id") Integer id);

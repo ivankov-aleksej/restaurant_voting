@@ -1,8 +1,6 @@
 package com.example.restaurant_voting.model;
 
 import com.example.restaurant_voting.View;
-import com.example.restaurant_voting.config.MenuSerializer;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +16,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@JsonSerialize(using = MenuSerializer.class)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -27,7 +24,7 @@ import java.util.List;
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"restaurant_id", "action_date"}, name = "restaurant_id_action_date_unique")})
 public class Menu extends BaseEntity implements Serializable {
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", foreignKey = @ForeignKey(name = "fk_menu_restaurant_id"))
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
@@ -41,7 +38,7 @@ public class Menu extends BaseEntity implements Serializable {
     //    https://discourse.hibernate.org/t/hibernate-lazy-mode-doesnt-work-with-spring-boot/1535/6
     //    spring.jpa.open-in-view=false
     //    You need to use a JPQL query with JOIN FETCH the lazy associations.
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "menu")
+    @OneToMany(mappedBy = "menu")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Dish> dishes = new ArrayList<>();
 

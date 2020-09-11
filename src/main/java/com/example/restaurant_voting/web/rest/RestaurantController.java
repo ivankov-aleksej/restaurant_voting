@@ -55,32 +55,30 @@ public class RestaurantController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") final Integer id) {
+    public ResponseEntity delete(@PathVariable("id") final Integer id) {
         return (restaurantRepository.delete(id) != 0 ? ResponseEntity.noContent() : ResponseEntity.unprocessableEntity()).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateById(@PathVariable("id") Integer id, @RequestBody Restaurant restaurant) {
+    public ResponseEntity updateById(@PathVariable("id") Integer id, @RequestBody Restaurant restaurant) {
         if (restaurantRepository.findById(id).isPresent()) {
             restaurant.setId(id);
             restaurantRepository.save(restaurant);
             return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.unprocessableEntity().build();
         }
+        return ResponseEntity.unprocessableEntity().build();
     }
 
     @PostMapping("/{id}/menus")
-    public ResponseEntity<?> createMenu(@PathVariable("id") final Integer id) {
-        Optional<Restaurant> restaurant = restaurantRepository.findById(id);
-        if (restaurant.isPresent()) {
+    public ResponseEntity<Menu> createMenu(@PathVariable("id") final Integer id) {
+        Optional<Restaurant> restaurantOptional = restaurantRepository.findById(id);
+        if (restaurantOptional.isPresent() && menuRepository.findByDateWithRestaurantId(DateUtil.getTomorrow(), id).isEmpty()) {
             Menu menu = new Menu();
             menu.setActionDate(DateUtil.getTomorrow());
-            menu.setRestaurant(restaurant.get());
+            menu.setRestaurant(restaurantOptional.get());
             return ResponseEntity.status(HttpStatus.CREATED).body(menuRepository.save(menu));
-        } else {
-            return ResponseEntity.unprocessableEntity().build();
         }
+        return ResponseEntity.unprocessableEntity().build();
     }
 }
 
