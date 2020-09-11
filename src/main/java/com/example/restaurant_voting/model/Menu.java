@@ -27,7 +27,7 @@ public class Menu extends BaseEntity implements Serializable {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", foreignKey = @ForeignKey(name = "fk_menu_restaurant_id"))
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @NotNull
+    @NotNull(groups = View.Persist.class)
     private Restaurant restaurant;
 
     @Column(name = "action_date", updatable = false, columnDefinition = "DATE DEFAULT CURRENT_DATE")
@@ -45,8 +45,8 @@ public class Menu extends BaseEntity implements Serializable {
     @Override
     public String toString() {
         return "Menu{" +
-                "id=" + this.getId() +
-                ", restaurantId=" + restaurant.getId() +
+                "id=" + id +
+                ", restaurant=" + restaurant +
                 ", actionDate=" + actionDate +
                 '}';
     }

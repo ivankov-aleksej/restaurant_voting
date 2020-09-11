@@ -1,5 +1,6 @@
 package com.example.restaurant_voting.web.rest;
 
+import com.example.restaurant_voting.View;
 import com.example.restaurant_voting.model.Dish;
 import com.example.restaurant_voting.model.Menu;
 import com.example.restaurant_voting.repository.DishRepository;
@@ -11,6 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -69,7 +71,7 @@ public class MenuController {
     }
 
     @PostMapping("/{id}/dishes")
-    public ResponseEntity<Dish> createDish(@PathVariable("id") final Integer id, @RequestBody Dish dish) {
+    public ResponseEntity<Dish> createDish(@PathVariable("id") final Integer id, @Validated(View.Web.class) @RequestBody Dish dish) {
         Optional<Menu> menuOptional = menuRepository.findById(id);
         if (menuOptional.isPresent() && menuOptional.get().getActionDate().equals(DateUtil.getTomorrow())) {
             dish.setMenu(menuOptional.get());

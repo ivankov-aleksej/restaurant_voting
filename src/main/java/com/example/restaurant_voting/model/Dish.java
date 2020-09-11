@@ -1,5 +1,6 @@
 package com.example.restaurant_voting.model;
 
+import com.example.restaurant_voting.View;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,7 @@ public class Dish extends BaseEntity implements Serializable {
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id", foreignKey = @ForeignKey(name = "fk_dish_menu_id"))
-    @NotNull
+    @NotNull(groups = View.Persist.class)
     private Menu menu;
 
     @Column(name = "name", nullable = false)
@@ -36,8 +37,8 @@ public class Dish extends BaseEntity implements Serializable {
     @Override
     public String toString() {
         return "Dish{" +
-                "id='" + this.getId() + '\'' +
-                ", menuId='" + menu.getId() + '\'' +
+                "id='" + id + '\'' +
+                ", menu='" + menu + '\'' +
                 ", name='" + name + '\'' +
                 ", price=" + price +
                 '}';

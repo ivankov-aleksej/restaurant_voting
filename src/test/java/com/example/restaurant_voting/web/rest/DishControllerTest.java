@@ -4,7 +4,6 @@ import com.example.restaurant_voting.util.DateUtil;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
@@ -16,7 +15,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-//import static com.example.easy_voting.web.rest.MenuControllerTest.MENU_NOT_FOUND_ID;
 class DishControllerTest extends AbstractControllerTest {
     private static final String REST_URL = DishController.REST_URL + '/';
     private static final String REST_URL_BY_DATE = REST_URL + "byDate?date=2020-08-01";
@@ -33,7 +31,6 @@ class DishControllerTest extends AbstractControllerTest {
     private final static LocalDate YESTERDAY_DATE = LocalDate.parse("2020-08-01");
 
     @Test
-//    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     void getAll() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL))
                 .andDo(print())
@@ -73,7 +70,6 @@ class DishControllerTest extends AbstractControllerTest {
     //    https://javadoc.io/static/org.mockito/mockito-core/3.4.6/org/mockito/Mockito.html#static_mocks
     @Test
     @SuppressWarnings("unchecked")
-    @Rollback(false)
     void deleteDishWithTomorrowDateMenu() throws Exception {
         assertNotEquals(YESTERDAY_DATE, DateUtil.getDate());
         try (MockedStatic mocked = mockStatic(DateUtil.class)) {

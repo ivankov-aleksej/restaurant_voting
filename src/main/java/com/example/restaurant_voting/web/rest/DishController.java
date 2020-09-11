@@ -1,5 +1,6 @@
 package com.example.restaurant_voting.web.rest;
 
+import com.example.restaurant_voting.View;
 import com.example.restaurant_voting.model.Dish;
 import com.example.restaurant_voting.repository.DishRepository;
 import com.example.restaurant_voting.util.DateUtil;
@@ -9,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -34,7 +36,8 @@ public class DishController {
     }
 
     @GetMapping("/byDate")
-    public ResponseEntity<Page<Dish>> getByDate(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, Pageable pageable) {
+    public ResponseEntity<Page<Dish>> getByDate(
+            @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, Pageable pageable) {
         Page<Dish> dishes = dishRepository.findByDate(date, pageable);
         return new ResponseEntity<>(dishes, HttpStatus.OK);
     }
@@ -66,7 +69,7 @@ public class DishController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity updateById(@PathVariable("id") Integer id, @RequestBody final Dish dish) {
+    public ResponseEntity updateById(@PathVariable("id") Integer id, @Validated(View.Web.class) @RequestBody final Dish dish) {
         Optional<Dish> optionalDish = dishRepository.findByIdWithJoin(id);
         if (optionalDish.isPresent() && optionalDish.get().getMenu().getActionDate().equals(DateUtil.getTomorrow())) {
             dishRepository.save(updateDish(optionalDish.get(), dish));
