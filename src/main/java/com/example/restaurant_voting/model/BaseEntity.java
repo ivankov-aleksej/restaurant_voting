@@ -20,7 +20,7 @@ public abstract class BaseEntity implements Persistable<Integer> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
-    @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", initialValue = 100, allocationSize = 1)
+    @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", initialValue = 200, allocationSize = 1)
     protected Integer id;
 
     // doesn't work for hibernate lazy proxy

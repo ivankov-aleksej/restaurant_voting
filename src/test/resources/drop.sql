@@ -1,0 +1,14 @@
+DELETE
+FROM vote;
+DELETE
+FROM dish;
+DELETE
+FROM menu;
+DELETE
+FROM restaurant;
+DELETE
+FROM user_role;
+DELETE
+FROM users;
+
+ALTER SEQUENCE global_seq RESTART WITH 200;

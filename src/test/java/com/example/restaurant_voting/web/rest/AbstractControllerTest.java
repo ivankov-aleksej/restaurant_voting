@@ -4,11 +4,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -20,17 +20,22 @@ import java.nio.file.Files;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@Transactional
+@Sql({"/drop.sql", "/data.sql"})
 abstract class AbstractControllerTest {
-
-    @Autowired
-    protected MockMvc mockMvc;
 
     private static final CharacterEncodingFilter CHARACTER_ENCODING_FILTER = new CharacterEncodingFilter();
 
     static {
         CHARACTER_ENCODING_FILTER.setEncoding("UTF-8");
         CHARACTER_ENCODING_FILTER.setForceEncoding(true);
+    }
+
+    @Autowired
+    protected MockMvc mockMvc;
+
+    static String readFile(String fileName) throws IOException {
+        File file = ResourceUtils.getFile("classpath:json/" + fileName);
+        return Files.readString(file.toPath(), StandardCharsets.UTF_8);
     }
 
     @BeforeEach
@@ -43,10 +48,5 @@ abstract class AbstractControllerTest {
 
     ResultActions perform(MockHttpServletRequestBuilder builder) throws Exception {
         return mockMvc.perform(builder);
-    }
-
-    protected static String readFile(String fileName) throws IOException {
-        File file = ResourceUtils.getFile("classpath:json/" + fileName);
-        return Files.readString(file.toPath(), StandardCharsets.UTF_8);
     }
 }
