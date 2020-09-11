@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class MenuControllerTest extends AbstractControllerTest {
-    private static final String REST_URL = MenuController.REST_URL + '/';
+    static final String REST_URL = MenuController.REST_URL + '/';
     private static final String REST_URL_BY_DATE = REST_URL + "byDate?date=2020-08-01";
 
     /**
@@ -26,7 +26,7 @@ class MenuControllerTest extends AbstractControllerTest {
     private final static LocalDate TOMORROW_DATE = LocalDate.parse("2020-08-03");
     private final static LocalDate CURRENT_DATE = LocalDate.parse("2020-08-02");
     private final static LocalDate YESTERDAY_DATE = LocalDate.parse("2020-08-01");
-    private final static Integer MENU_ID = 107;
+    final static Integer MENU_ID = 107;
 
     @Test
     void getAll() throws Exception {

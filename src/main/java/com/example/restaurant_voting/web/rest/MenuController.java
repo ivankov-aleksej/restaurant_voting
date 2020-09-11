@@ -1,6 +1,8 @@
 package com.example.restaurant_voting.web.rest;
 
+import com.example.restaurant_voting.model.Dish;
 import com.example.restaurant_voting.model.Menu;
+import com.example.restaurant_voting.repository.DishRepository;
 import com.example.restaurant_voting.repository.MenuRepository;
 import com.example.restaurant_voting.util.DateUtil;
 import org.springframework.data.domain.Page;
@@ -21,8 +23,12 @@ public class MenuController {
 
     private final MenuRepository menuRepository;
 
-    public MenuController(MenuRepository menuRepository) {
+    private final DishRepository dishRepository;
+
+    public MenuController(MenuRepository menuRepository,
+                          DishRepository dishRepository) {
         this.menuRepository = menuRepository;
+        this.dishRepository = dishRepository;
     }
 
     @GetMapping
@@ -55,9 +61,19 @@ public class MenuController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") final Integer id) {
+    public ResponseEntity delete(@PathVariable("id") final Integer id) {
         if (menuRepository.deleteWithDate(DateUtil.getTomorrow(), id) != 0) {
             return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.unprocessableEntity().build();
+    }
+
+    @PostMapping("/{id}/dishes")
+    public ResponseEntity<Dish> createDish(@PathVariable("id") final Integer id, @RequestBody Dish dish) {
+        Optional<Menu> menuOptional = menuRepository.findById(id);
+        if (menuOptional.isPresent() && menuOptional.get().getActionDate().equals(DateUtil.getTomorrow())) {
+            dish.setMenu(menuOptional.get());
+            return ResponseEntity.status(HttpStatus.CREATED).body(dishRepository.save(dish));
         }
         return ResponseEntity.unprocessableEntity().build();
     }
