@@ -22,10 +22,11 @@ public interface VoteRepository extends JpaRepository<Vote, Integer> {
     @Query("DELETE FROM Vote v WHERE v.user.id=:userId AND v.date=:date")
     int delete(@Param("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @Param("userId") int userId);
 
-    @Query("SELECT v FROM Vote v WHERE v.user.id=:userId")
+    @Query(value = "SELECT v FROM Vote v LEFT JOIN FETCH v.menu m LEFT JOIN FETCH m.restaurant WHERE v.user.id=:userId",
+            countQuery = "SELECT count(v) FROM Vote v")
     Page<Vote> findAll(Pageable pageable, @Param("userId") int userId);
 
-    @Query("SELECT v FROM Vote v WHERE v.date=:date AND v.user.id=:userId")
+    @Query("SELECT v FROM Vote v LEFT JOIN FETCH v.menu m LEFT JOIN FETCH m.restaurant WHERE v.date=:date AND v.user.id=:userId")
     List<Vote> findByDate(@Param("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                           @Param("userId") int userId);
 
