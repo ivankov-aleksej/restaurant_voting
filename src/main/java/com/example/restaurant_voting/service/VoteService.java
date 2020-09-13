@@ -7,6 +7,7 @@ import com.example.restaurant_voting.repository.UserRepository;
 import com.example.restaurant_voting.repository.VoteRepository;
 import com.example.restaurant_voting.to.VoteTo;
 import com.example.restaurant_voting.util.DateUtil;
+import com.example.restaurant_voting.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -61,17 +62,19 @@ public class VoteService {
     @Transactional
     public Vote save(int menuId, int userId) {
         checkExpiredTime(DateUtil.getTime(), expiredTime);
-        Optional<Vote> voteOptional = getByDate(DateUtil.getDate(), userId);
+
         Optional<Menu> menuOptional = menuRepository.findByIdWithJoin(menuId);
-        checkNotFoundWithId(menuOptional.isPresent(), menuId);
-        checkCurrentDate(menuOptional.get().getActionDate(), menuId);
-        if (voteOptional.isEmpty()) {
-            return voteRepository.save(new Vote(menuOptional.get(), userRepository.getOne(userId)));
+        Menu menu = menuOptional.orElseThrow(() -> new NotFoundException("id=" + menuId));
+        checkCurrentDate(menu.getActionDate(), menuId);
+
+        Optional<Vote> voteOptional = getByDate(DateUtil.getDate(), userId);
+
+        if (voteOptional.isPresent()) {
+            Vote vote = voteOptional.get();
+            vote.setMenu(menu);
+            return vote;
         }
-        Vote vote = voteOptional.get();
-        checkCurrentDate(vote.getMenu().getActionDate(), menuId);
-        vote.setMenu(menuOptional.get());
-        return vote;
+        return voteRepository.save(new Vote(menu, userRepository.getOne(userId)));
     }
 
     public Page<VoteTo> getStatisticCurrent(Pageable pageable) {
