@@ -52,7 +52,7 @@ public class VoteService {
     }
 
     public Optional<Vote> getByDate(LocalDate date, int userId) {
-        List<Vote> votes = voteRepository.findByDate(date, userId);
+        List<Vote> votes = voteRepository.findByDateJoin(date, userId);
         if (votes.isEmpty()) {
             return Optional.empty();
         }
@@ -63,18 +63,18 @@ public class VoteService {
     public Vote save(int menuId, int userId) {
         checkExpiredTime(DateUtil.getTime(), expiredTime);
 
-        Optional<Menu> menuOptional = menuRepository.findByIdWithJoin(menuId);
+        Optional<Menu> menuOptional = menuRepository.findByIdWithJoinRestaurant(menuId);
         Menu menu = menuOptional.orElseThrow(() -> new NotFoundException("id=" + menuId));
         checkCurrentDate(menu.getActionDate(), menuId);
 
-        Optional<Vote> voteOptional = getByDate(DateUtil.getDate(), userId);
+        List<Vote> votes = voteRepository.findByDate(DateUtil.getDate(), userId);
 
-        if (voteOptional.isPresent()) {
-            Vote vote = voteOptional.get();
-            vote.setMenu(menu);
-            return vote;
+        if (votes.isEmpty()) {
+            return voteRepository.save(new Vote(menu, userRepository.getOne(userId)));
         }
-        return voteRepository.save(new Vote(menu, userRepository.getOne(userId)));
+        Vote vote = votes.get(0);
+        vote.setMenu(menu);
+        return vote;
     }
 
     public Page<VoteTo> getStatisticCurrent(Pageable pageable) {

@@ -27,6 +27,10 @@ public interface VoteRepository extends JpaRepository<Vote, Integer> {
     Page<Vote> findAll(Pageable pageable, @Param("userId") int userId);
 
     @Query("SELECT v FROM Vote v LEFT JOIN FETCH v.menu m LEFT JOIN FETCH m.restaurant WHERE v.date=:date AND v.user.id=:userId")
+    List<Vote> findByDateJoin(@Param("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+                              @Param("userId") int userId);
+
+    @Query("SELECT v FROM Vote v WHERE v.date=:date AND v.user.id=:userId")
     List<Vote> findByDate(@Param("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                           @Param("userId") int userId);
 

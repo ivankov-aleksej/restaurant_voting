@@ -20,13 +20,13 @@ import java.time.LocalDate;
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"date", "user_id"}, name = "date_user_id_unique")})
 public class Vote extends BaseEntity implements Serializable {
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_vote_user_id"), nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_vote_user_id"), nullable = false, updatable = false)
     @NotNull
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id", foreignKey = @ForeignKey(name = "fk_vote_menu_id"), nullable = false)
     @NotNull
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -44,9 +44,9 @@ public class Vote extends BaseEntity implements Serializable {
     @Override
     public String toString() {
         return "Vote{" +
-                "id=" + this.getId() +
-                ", userId=" + user.getId() +
-                ", menuId=" + menu.getId() +
+                "id=" + id +
+                ", user=" + user +
+                ", menu=" + menu +
                 ", date=" + date +
                 '}';
     }

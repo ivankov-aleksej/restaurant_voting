@@ -16,6 +16,7 @@ import java.time.LocalTime;
 
 import static com.example.restaurant_voting.TestUtil.userHttpBasic;
 import static com.example.restaurant_voting.UserTestData.USER1;
+import static com.example.restaurant_voting.UserTestData.USER2;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.mockStatic;
@@ -50,7 +51,7 @@ class VoteControllerTest extends AbstractControllerTest {
     //    https://javadoc.io/static/org.mockito/mockito-core/3.4.6/org/mockito/Mockito.html#static_mocks
     @Test
     @SuppressWarnings("unchecked")
-    void create() throws Exception {
+    void update() throws Exception {
         assertNotEquals(CURRENT_DATE, DateUtil.getDate());
         checkTime();
         assertNotEquals(CURRENT_TIME, DateUtil.getTime());
@@ -62,6 +63,29 @@ class VoteControllerTest extends AbstractControllerTest {
 
             perform(MockMvcRequestBuilders.post(REST_URL + FOUR_MENU_ID)
                     .with(userHttpBasic(USER1)))
+                    .andDo(print())
+                    .andExpect(status().isCreated())
+                    .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+        }
+        assertNotEquals(CURRENT_DATE, DateUtil.getDate());
+        checkTime();
+        assertNotEquals(CURRENT_TIME, DateUtil.getTime());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void create() throws Exception {
+        assertNotEquals(CURRENT_DATE, DateUtil.getDate());
+        checkTime();
+        assertNotEquals(CURRENT_TIME, DateUtil.getTime());
+        try (MockedStatic mocked = mockStatic(DateUtil.class)) {
+            mocked.when(DateUtil::getDate).thenReturn(CURRENT_DATE);
+            mocked.when(DateUtil::getTime).thenReturn(CURRENT_TIME);
+            assertEquals(CURRENT_DATE, DateUtil.getDate());
+            assertEquals(CURRENT_TIME, DateUtil.getTime());
+
+            perform(MockMvcRequestBuilders.post(REST_URL + FOUR_MENU_ID)
+                    .with(userHttpBasic(USER2)))
                     .andDo(print())
                     .andExpect(status().isCreated())
                     .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));

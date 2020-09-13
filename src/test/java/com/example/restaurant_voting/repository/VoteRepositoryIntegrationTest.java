@@ -40,7 +40,7 @@ class VoteRepositoryIntegrationTest {
 
     @Test
     void findByDate() {
-        List<Vote> votes = voteRepository.findByDate(DATE, 100);
+        List<Vote> votes = voteRepository.findByDateJoin(DATE, 100);
         assertEquals(1, votes.size());
         assertEquals(DATE, votes.get(0).getDate());
         assertEquals(100, votes.get(0).getUser().getId());
@@ -58,16 +58,14 @@ class VoteRepositoryIntegrationTest {
     void getStatisticAll() {
         Page<VoteTo> voteTos = voteRepository.getStatisticAll(PageRequest.of(0, 20,
                 Sort.by(new Sort.Order(Sort.Direction.DESC, "date"), new Sort.Order(Sort.Direction.ASC, "menu.id"))));
-        assertEquals(4, voteTos.getContent().size());
+        assertEquals(3, voteTos.getContent().size());
         assertEquals(2, voteTos.getContent().get(0).getCount());
         assertEquals(1, voteTos.getContent().get(1).getCount());
-        assertEquals(1, voteTos.getContent().get(2).getCount());
-        assertEquals(2, voteTos.getContent().get(3).getCount());
+        assertEquals(2, voteTos.getContent().get(2).getCount());
 
         assertEquals(107, voteTos.getContent().get(0).getMenu().getId());
-        assertEquals(108, voteTos.getContent().get(1).getMenu().getId());
-        assertEquals(105, voteTos.getContent().get(2).getMenu().getId());
-        assertEquals(106, voteTos.getContent().get(3).getMenu().getId());
+        assertEquals(105, voteTos.getContent().get(1).getMenu().getId());
+        assertEquals(106, voteTos.getContent().get(2).getMenu().getId());
 
     }
 }

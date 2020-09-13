@@ -32,6 +32,9 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
     @Query("SELECT m FROM Menu m LEFT JOIN FETCH m.dishes LEFT JOIN FETCH m.restaurant WHERE m.id=:id")
     Optional<Menu> findByIdWithJoin(@Param("id") Integer id);
 
+    @Query("SELECT m FROM Menu m LEFT JOIN FETCH m.restaurant WHERE m.id=:id")
+    Optional<Menu> findByIdWithJoinRestaurant(@Param("id") Integer id);
+
     //    https://stackoverflow.com/questions/21549480/spring-data-fetch-join-with-paging-is-not-working
     //    https://stackoverflow.com/questions/26901010/spring-data-jpa-eager-fetch-with-join-and-using-pagination-not-working
     @Query(value = "SELECT m FROM Menu m LEFT JOIN FETCH m.dishes LEFT JOIN FETCH m.restaurant",

@@ -1,6 +1,7 @@
 package com.example.restaurant_voting.service;
 
 import com.example.restaurant_voting.model.Menu;
+import com.example.restaurant_voting.model.User;
 import com.example.restaurant_voting.model.Vote;
 import com.example.restaurant_voting.repository.MenuRepository;
 import com.example.restaurant_voting.repository.UserRepository;
@@ -23,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mockStatic;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,10 +36,11 @@ class VoteServiceTest {
     private LocalTime CURRENT_TIME = LocalTime.parse("10:00");
     private LocalTime EXPIRED_TIME = LocalTime.parse("12:00");
     private LocalTime EXPIRED_TIME_TEMPLATE = LocalTime.parse("11:00");
-    private final int userId = 100;
+    private final int userOneId = 100;
+    private final int userTwoId = 101;
     private final int menuIdOneCurrent = 50;
-    private final int menuIdTwoCurrent = 45;
-    private final int menuIdThreeCurrent = 35;
+    private final int menuIdTwoCurrent = 40;
+    private final int menuIdThreeCurrent = 30;
 
     private VoteService voteService;
 
@@ -56,19 +58,43 @@ class VoteServiceTest {
         menuThreeCurrent.setId(menuIdThreeCurrent);
         menuThreeCurrent.setActionDate(YESTERDAY_DATE);
 
+        Vote voteUpdate = new Vote();
+        voteUpdate.setId(120);
+        voteUpdate.setDate(CURRENT_DATE);
+        voteUpdate.setMenu(menuTwoCurrent);
+
         Vote vote = new Vote();
         vote.setId(120);
         vote.setDate(CURRENT_DATE);
         vote.setMenu(menuOneCurrent);
 
-        Mockito.lenient().when(voteRepository.findByDate(eq(CURRENT_DATE), eq(userId))).thenReturn(List.of(vote));
-        Mockito.lenient().when(voteRepository.findByDate(eq(TOMORROW_DATE), eq(userId))).thenReturn(List.of());
 
-        Mockito.lenient().when(voteRepository.delete(eq(CURRENT_DATE), eq(userId))).thenReturn(1);
-        Mockito.lenient().when(voteRepository.delete(eq(TOMORROW_DATE), eq(userId))).thenReturn(0);
+        User user1 = new User();
+        user1.setId(userOneId);
+        User user2 = new User();
+        user2.setId(userTwoId);
 
-        Mockito.lenient().when(menuRepository.findByIdWithJoin(eq(menuIdOneCurrent))).thenReturn(Optional.of(menuOneCurrent));
-        Mockito.lenient().when(menuRepository.findByIdWithJoin(eq(menuIdTwoCurrent))).thenReturn(Optional.of(menuTwoCurrent));
+        Mockito.lenient().when(voteRepository.findByDateJoin(eq(CURRENT_DATE), eq(userOneId))).thenReturn(List.of(vote));
+        Mockito.lenient().when(voteRepository.findByDateJoin(eq(TOMORROW_DATE), eq(userOneId))).thenReturn(List.of());
+
+        Mockito.lenient().when(voteRepository.findByDate(eq(CURRENT_DATE), eq(userOneId))).thenReturn(List.of());
+        Mockito.lenient().when(voteRepository.findByDate(eq(CURRENT_DATE), eq(userTwoId))).thenReturn(List.of(vote));
+
+
+        Mockito.lenient().when(voteRepository.delete(eq(CURRENT_DATE), eq(userOneId))).thenReturn(1);
+        Mockito.lenient().when(voteRepository.delete(eq(CURRENT_DATE), eq(userTwoId))).thenReturn(0);
+        Mockito.lenient().when(voteRepository.delete(eq(TOMORROW_DATE), eq(userOneId))).thenReturn(0);
+
+        Mockito.lenient().when(menuRepository.findByIdWithJoinRestaurant(eq(menuIdOneCurrent))).thenReturn(Optional.of(menuOneCurrent));
+        Mockito.lenient().when(menuRepository.findByIdWithJoinRestaurant(eq(menuIdTwoCurrent))).thenReturn(Optional.of(menuTwoCurrent));
+
+        Mockito.lenient().when(menuRepository.findByIdWithJoinRestaurant(eq(menuIdTwoCurrent))).thenReturn(Optional.of(menuTwoCurrent));
+
+        Mockito.lenient().when(userRepository.getOne(anyInt())).thenReturn(new User());
+        Mockito.lenient().when(userRepository.getOne(userOneId)).thenReturn(user1);
+        Mockito.lenient().when(userRepository.getOne(userTwoId)).thenReturn(user2);
+
+        Mockito.lenient().when(voteRepository.save(any(Vote.class))).thenReturn(voteUpdate);
 
         voteService = new VoteService(voteRepository, menuRepository, userRepository);
         //    https://www.baeldung.com/spring-reflection-test-utils
@@ -84,8 +110,7 @@ class VoteServiceTest {
             mocked.when(DateUtil::getTime).thenReturn(CURRENT_TIME);
             assertEquals(CURRENT_DATE, DateUtil.getDate());
 
-            voteService.delete(userId);
-
+            voteService.delete(userOneId);
         }
         assertNotEquals(CURRENT_DATE, DateUtil.getDate());
     }
@@ -99,7 +124,7 @@ class VoteServiceTest {
             mocked.when(DateUtil::getTime).thenReturn(CURRENT_TIME);
             assertEquals(TOMORROW_DATE, DateUtil.getDate());
 
-            assertThrows(NotFoundException.class, () -> voteService.delete(userId));
+            assertThrows(NotFoundException.class, () -> voteService.delete(userOneId));
         }
         assertNotEquals(TOMORROW_DATE, DateUtil.getDate());
     }
@@ -113,22 +138,35 @@ class VoteServiceTest {
             mocked.when(DateUtil::getTime).thenReturn(EXPIRED_TIME);
             assertEquals(CURRENT_DATE, DateUtil.getDate());
 
-            assertThrows(TimeException.class, () -> voteService.delete(userId));
+            assertThrows(TimeException.class, () -> voteService.delete(userOneId));
         }
         assertNotEquals(CURRENT_DATE, DateUtil.getDate());
     }
 
     @Test
     @SuppressWarnings("unchecked")
-    void save() {
+    void saveAsCreate() {
         assertNotEquals(CURRENT_DATE, DateUtil.getDate());
         try (MockedStatic mocked = mockStatic(DateUtil.class)) {
             mocked.when(DateUtil::getDate).thenReturn(CURRENT_DATE);
             mocked.when(DateUtil::getTime).thenReturn(CURRENT_TIME);
             assertEquals(CURRENT_DATE, DateUtil.getDate());
 
-            assertEquals(menuIdTwoCurrent, voteService.save(menuIdTwoCurrent, userId).getMenu().getId());
+            assertEquals(menuIdTwoCurrent, voteService.save(menuIdTwoCurrent, userOneId).getMenu().getId());
+        }
+        assertNotEquals(CURRENT_DATE, DateUtil.getDate());
+    }
 
+    @Test
+    @SuppressWarnings("unchecked")
+    void saveUpdate() {
+        assertNotEquals(CURRENT_DATE, DateUtil.getDate());
+        try (MockedStatic mocked = mockStatic(DateUtil.class)) {
+            mocked.when(DateUtil::getDate).thenReturn(CURRENT_DATE);
+            mocked.when(DateUtil::getTime).thenReturn(CURRENT_TIME);
+            assertEquals(CURRENT_DATE, DateUtil.getDate());
+
+            assertEquals(menuIdTwoCurrent, voteService.save(menuIdTwoCurrent, userTwoId).getMenu().getId());
         }
         assertNotEquals(CURRENT_DATE, DateUtil.getDate());
     }
@@ -142,18 +180,18 @@ class VoteServiceTest {
             mocked.when(DateUtil::getTime).thenReturn(CURRENT_TIME);
             assertEquals(CURRENT_DATE, DateUtil.getDate());
 
-            assertThrows(NotFoundException.class, () -> voteService.save(menuIdThreeCurrent, userId));
+            assertThrows(NotFoundException.class, () -> voteService.save(menuIdThreeCurrent, userOneId));
         }
         assertNotEquals(CURRENT_DATE, DateUtil.getDate());
     }
 
     @Test
     void getByDate() {
-        assertTrue(voteService.getByDate(CURRENT_DATE, userId).isPresent());
+        assertTrue(voteService.getByDate(CURRENT_DATE, userOneId).isPresent());
     }
 
     @Test
     void getByDateNotFound() {
-        assertTrue(voteService.getByDate(TOMORROW_DATE, userId).isEmpty());
+        assertTrue(voteService.getByDate(TOMORROW_DATE, userOneId).isEmpty());
     }
 }
