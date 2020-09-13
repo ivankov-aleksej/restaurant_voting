@@ -8,6 +8,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
 
+import static com.example.restaurant_voting.TestUtil.userHttpBasic;
+import static com.example.restaurant_voting.UserTestData.ADMIN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.mockStatic;
@@ -32,7 +34,8 @@ class DishControllerTest extends AbstractControllerTest {
 
     @Test
     void getAll() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL))
+        perform(MockMvcRequestBuilders.get(REST_URL)
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content()
@@ -41,7 +44,8 @@ class DishControllerTest extends AbstractControllerTest {
 
     @Test
     void getByDate() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL_BY_DATE))
+        perform(MockMvcRequestBuilders.get(REST_URL_BY_DATE)
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content()
@@ -50,7 +54,8 @@ class DishControllerTest extends AbstractControllerTest {
 
     @Test
     void getByName() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL_BY_NAME))
+        perform(MockMvcRequestBuilders.get(REST_URL_BY_NAME)
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content()
@@ -59,7 +64,8 @@ class DishControllerTest extends AbstractControllerTest {
 
     @Test
     void getById() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + DISH_ID))
+        perform(MockMvcRequestBuilders.get(REST_URL + DISH_ID)
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content()
@@ -77,7 +83,8 @@ class DishControllerTest extends AbstractControllerTest {
             mocked.when(DateUtil::getTomorrow).thenReturn(CURRENT_DATE);
             assertEquals(YESTERDAY_DATE, DateUtil.getDate());
 
-            perform(MockMvcRequestBuilders.delete(REST_URL + DISH_ID))
+            perform(MockMvcRequestBuilders.delete(REST_URL + DISH_ID)
+                    .with(userHttpBasic(ADMIN)))
                     .andDo(print())
                     .andExpect(status().isNoContent());
         }
@@ -95,7 +102,8 @@ class DishControllerTest extends AbstractControllerTest {
 
             perform(MockMvcRequestBuilders.put(REST_URL + DISH_ID)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(readFile(PACKAGE_JSON + "dish_create_update.json")))
+                    .content(readFile(PACKAGE_JSON + "dish_create_update.json"))
+                    .with(userHttpBasic(ADMIN)))
                     .andDo(print())
                     .andExpect(status().isNoContent());
         }
@@ -113,7 +121,8 @@ class DishControllerTest extends AbstractControllerTest {
 
             perform(MockMvcRequestBuilders.post(MenuControllerTest.REST_URL + MenuControllerTest.MENU_ID + "/dishes")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(readFile(PACKAGE_JSON + "dish_create_update.json")))
+                    .content(readFile(PACKAGE_JSON + "dish_create_update.json"))
+                    .with(userHttpBasic(ADMIN)))
                     .andDo(print())
                     .andExpect(status().isCreated());
         }

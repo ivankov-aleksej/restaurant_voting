@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static com.example.restaurant_voting.TestUtil.userHttpBasic;
+import static com.example.restaurant_voting.UserTestData.ADMIN;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -17,7 +19,8 @@ class RestaurantControllerTest extends AbstractControllerTest {
 
     @Test
     void getAll() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL))
+        perform(MockMvcRequestBuilders.get(REST_URL)
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content()
@@ -26,7 +29,8 @@ class RestaurantControllerTest extends AbstractControllerTest {
 
     @Test
     void getByName() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_NAME))
+        perform(MockMvcRequestBuilders.get(REST_NAME)
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content()
@@ -35,7 +39,8 @@ class RestaurantControllerTest extends AbstractControllerTest {
 
     @Test
     void getById() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT_ID))
+        perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT_ID)
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content()
@@ -46,7 +51,8 @@ class RestaurantControllerTest extends AbstractControllerTest {
     void create() throws Exception {
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(readFile(PACKAGE_JSON + "restaurant_create.json")))
+                .content(readFile(PACKAGE_JSON + "restaurant_create.json"))
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content()
@@ -56,7 +62,8 @@ class RestaurantControllerTest extends AbstractControllerTest {
 
     @Test
     void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + RESTAURANT_ID))
+        perform(MockMvcRequestBuilders.delete(REST_URL + RESTAURANT_ID)
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
     }
@@ -65,7 +72,8 @@ class RestaurantControllerTest extends AbstractControllerTest {
     void updateById() throws Exception {
         perform(MockMvcRequestBuilders.put(REST_URL + RESTAURANT_ID)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(readFile(PACKAGE_JSON + "restaurant_update.json")))
+                .content(readFile(PACKAGE_JSON + "restaurant_update.json"))
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
     }

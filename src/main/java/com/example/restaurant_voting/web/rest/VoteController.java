@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import static com.example.restaurant_voting.util.SecurityUtil.authUserId;
+import static com.example.restaurant_voting.AuthUser.authUserId;
 
 @RestController
 @RequestMapping(value = VoteController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -14,6 +14,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import static com.example.restaurant_voting.TestUtil.userHttpBasic;
+import static com.example.restaurant_voting.UserTestData.USER1;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.mockStatic;
@@ -25,11 +27,9 @@ class VoteControllerTest extends AbstractControllerTest {
     private static final String REST_URL = VoteController.REST_URL + '/';
     private static final String REST_URL_BY_DATE = REST_URL + "byDate?date=2020-08-02";
     private final static Integer FOUR_MENU_ID = 108;  // CURRENT_DATE == Menu.createdOn for this id
-
+    private final static LocalDate CURRENT_DATE = LocalDate.parse("2020-08-02");
     @Autowired
     private VoteService voteService;
-
-    private final static LocalDate CURRENT_DATE = LocalDate.parse("2020-08-02");
     private LocalTime CURRENT_TIME;
     private LocalTime EXPIRED_TIME;
 
@@ -60,7 +60,8 @@ class VoteControllerTest extends AbstractControllerTest {
             assertEquals(CURRENT_DATE, DateUtil.getDate());
             assertEquals(CURRENT_TIME, DateUtil.getTime());
 
-            perform(MockMvcRequestBuilders.post(REST_URL + FOUR_MENU_ID))
+            perform(MockMvcRequestBuilders.post(REST_URL + FOUR_MENU_ID)
+                    .with(userHttpBasic(USER1)))
                     .andDo(print())
                     .andExpect(status().isCreated())
                     .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
@@ -82,7 +83,8 @@ class VoteControllerTest extends AbstractControllerTest {
             assertEquals(CURRENT_DATE, DateUtil.getDate());
             assertEquals(CURRENT_TIME, DateUtil.getTime());
 
-            perform(MockMvcRequestBuilders.delete(REST_URL))
+            perform(MockMvcRequestBuilders.delete(REST_URL)
+                    .with(userHttpBasic(USER1)))
                     .andDo(print())
                     .andExpect(status().isNoContent());
         }
@@ -99,7 +101,8 @@ class VoteControllerTest extends AbstractControllerTest {
             mocked.when(DateUtil::getDate).thenReturn(CURRENT_DATE);
             assertEquals(CURRENT_DATE, DateUtil.getDate());
 
-            perform(MockMvcRequestBuilders.get(REST_URL + "current"))
+            perform(MockMvcRequestBuilders.get(REST_URL + "current")
+                    .with(userHttpBasic(USER1)))
                     .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(content()
@@ -110,7 +113,8 @@ class VoteControllerTest extends AbstractControllerTest {
 
     @Test
     void getByDate() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL_BY_DATE))
+        perform(MockMvcRequestBuilders.get(REST_URL_BY_DATE)
+                .with(userHttpBasic(USER1)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content()
@@ -119,7 +123,8 @@ class VoteControllerTest extends AbstractControllerTest {
 
     @Test
     void getAll() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL))
+        perform(MockMvcRequestBuilders.get(REST_URL)
+                .with(userHttpBasic(USER1)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content()

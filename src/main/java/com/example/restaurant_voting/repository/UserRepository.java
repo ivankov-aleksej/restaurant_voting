@@ -1,8 +1,6 @@
 package com.example.restaurant_voting.repository;
 
 import com.example.restaurant_voting.model.User;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,9 +16,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Modifying
     @Query("DELETE FROM User u WHERE u.id=:id")
     int delete(@Param("id") int id);
-
-    @Query("SELECT u FROM User u LEFT JOIN u.roles WHERE u.email = LOWER(:email)")
-    Page<User> findByEmailIgnoreCase(String email, Pageable pageable);
 
     Optional<User> findByEmail(String email);
 }
