@@ -1,6 +1,8 @@
 package com.example.restaurant_voting.util;
 
+import com.example.restaurant_voting.model.BaseEntity;
 import com.example.restaurant_voting.util.exception.DateException;
+import com.example.restaurant_voting.util.exception.IllegalRequestDataException;
 import com.example.restaurant_voting.util.exception.NotFoundException;
 import com.example.restaurant_voting.util.exception.TimeException;
 import lombok.AccessLevel;
@@ -25,6 +27,22 @@ public class ValidationUtil {
         if (!found) {
             throw new NotFoundException(arg);
         }
+    }
+
+    public static void checkNew(BaseEntity entity) {
+        if (!entity.isNew()) {
+            throw new IllegalRequestDataException(entity + " must be new (id=null)");
+        }
+    }
+
+    public static boolean assureIdConsistent(BaseEntity entity, int id) {
+//      conservative when you reply, but accept liberally (http://stackoverflow.com/a/32728226/548473)
+        if (entity.isNew()) {
+            return false;
+        } else if (entity.id() != id) {
+            throw new IllegalRequestDataException(entity + " must be with id=" + id);
+        }
+        return true;
     }
 
     public static void checkExpiredDate(LocalDate date, int id) {

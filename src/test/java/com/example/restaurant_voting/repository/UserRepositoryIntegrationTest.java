@@ -4,12 +4,14 @@ import com.example.restaurant_voting.model.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.EnumSet;
-import java.util.Optional;
+import java.util.List;
 
-import static com.example.restaurant_voting.model.Role.ROLE_ADMIN;
-import static com.example.restaurant_voting.model.Role.ROLE_USER;
+import static com.example.restaurant_voting.model.Role.ADMIN;
+import static com.example.restaurant_voting.model.Role.USER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -30,13 +32,15 @@ class UserRepositoryIntegrationTest {
     }
 
     @Test
-    void findByName() {
-        Optional<User> userOptional = userRepository.findByEmailIgnoreCase("AdmiN@GmaiL.com");
-        assertTrue(userOptional.isPresent());
-        userOptional.ifPresent(user -> {
-            assertEquals("admin@gmail.com", user.getEmail());
-            assertEquals("admin", user.getPassword());
-            assertTrue(user.getRoles().containsAll(EnumSet.of(ROLE_ADMIN, ROLE_USER)));
-        });
+    void findByEmailIgnoreCase() {
+        Page<User> userPage = userRepository.findByEmailIgnoreCase("AdmiN@GmaiL.com", PageRequest.of(0, 20));
+        assertTrue(userPage.hasContent());
+        List<User> userList = userPage.getContent();
+        assertEquals(1, userList.size());
+        User user = userList.get(0);
+        assertEquals("admin@gmail.com", user.getEmail());
+        assertEquals("{noop}admin", user.getPassword());
+        assertTrue(user.getRoles().containsAll(EnumSet.of(ADMIN, USER)));
+
     }
 }

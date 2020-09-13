@@ -1,13 +1,13 @@
 INSERT INTO USERS (ID, EMAIL, PASSWORD)
-VALUES (100, 'admin@gmail.com', 'admin'),
-       (101, 'user1@gmail.com', 'password'),
-       (102, 'user2@gmail.com', 'password');
+VALUES (100, 'admin@gmail.com', '{noop}admin'),
+       (101, 'user1@gmail.com', '{noop}password'),
+       (102, 'user2@gmail.com', '{noop}password');
 
 INSERT INTO USER_ROLE (ROLE, USER_ID)
-VALUES ('ROLE_USER', 100),
-       ('ROLE_ADMIN', 100),
-       ('ROLE_USER', 101),
-       ('ROLE_USER', 102);
+VALUES ('USER', 100),
+       ('ADMIN', 100),
+       ('USER', 101),
+       ('USER', 102);
 
 INSERT INTO RESTAURANT("ID", "NAME")
 VALUES (103, 'McDonalds'),

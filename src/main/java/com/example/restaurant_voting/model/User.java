@@ -1,5 +1,9 @@
 package com.example.restaurant_voting.model;
 
+import com.example.restaurant_voting.util.JsonDeserializers;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +16,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.EnumSet;
 import java.util.Set;
 
 @Getter
@@ -31,8 +36,11 @@ public class User extends BaseEntity implements Serializable {
 
     @Column(name = "password", nullable = false)
     @Size(max = 128)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonDeserialize(using = JsonDeserializers.PasswordDeserializer.class)
     private String password;
 
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     @Column(name = "registered", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @NotNull
     private LocalDateTime registered = LocalDateTime.now();
@@ -45,6 +53,17 @@ public class User extends BaseEntity implements Serializable {
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
+
+    public User(String email, String password, Set<Role> roles) {
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    public User(Integer id, String email, String password, Role role, Role... roles) {
+        this(email, password, EnumSet.of(role, roles));
+        setId(id);
+    }
 
     @Override
     public String toString() {
