@@ -21,12 +21,12 @@ class DishRepositoryIntegrationTest {
 
     @Test
     void delete() {
-        assertEquals(1, dishRepository.delete(110));
+        assertEquals(1, dishRepository.delete(110, DATE));
     }
 
     @Test
     void deleteNotFound() {
-        assertEquals(0, dishRepository.delete(1));
+        assertEquals(0, dishRepository.delete(1, DATE));
     }
 
     @Test

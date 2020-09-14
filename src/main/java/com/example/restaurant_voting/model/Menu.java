@@ -21,7 +21,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"restaurant_id", "action_date"}, name = "restaurant_id_action_date_unique")})
+@NamedEntityGraphs(value = {
+        @NamedEntityGraph(name = "Menu.restaurant.dishes",
+                attributeNodes = {@NamedAttributeNode("restaurant"), @NamedAttributeNode("dishes")}),
+        @NamedEntityGraph(name = "Menu.restaurant", attributeNodes = {@NamedAttributeNode("restaurant")})
+})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"restaurant_id", "action_date"},
+        name = "restaurant_id_action_date_unique")})
 public class Menu extends BaseEntity implements Serializable {
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -41,6 +47,13 @@ public class Menu extends BaseEntity implements Serializable {
     @OneToMany(mappedBy = "menu")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Dish> dishes = new ArrayList<>();
+
+    public Menu(Integer id, @NotNull(groups = View.Persist.class) Restaurant restaurant,
+                @NotNull @Future(groups = View.Persist.class) LocalDate actionDate) {
+        super(id);
+        this.restaurant = restaurant;
+        this.actionDate = actionDate;
+    }
 
     @Override
     public String toString() {

@@ -16,6 +16,10 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@NamedEntityGraphs(value = {
+        @NamedEntityGraph(name = "Dish.menu", attributeNodes = @NamedAttributeNode("menu"))
+})
+//@JsonSerialize(using = DishSerializer.class)
 public class Dish extends BaseEntity implements Serializable {
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

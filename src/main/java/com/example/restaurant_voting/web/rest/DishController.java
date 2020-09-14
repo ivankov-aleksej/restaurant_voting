@@ -59,10 +59,7 @@ public class DishController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable("id") final Integer id) {
-        Optional<Dish> dishOptional = dishRepository.findByIdWithJoin(id);
-        if (dishOptional.isPresent()
-                && dishOptional.get().getMenu().getActionDate().equals(DateUtil.getTomorrow())
-                && dishRepository.delete(id) != 0) {
+        if (dishRepository.delete(id, DateUtil.getTomorrow()) != 0) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.unprocessableEntity().build();

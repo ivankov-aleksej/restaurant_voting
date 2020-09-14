@@ -18,8 +18,8 @@ public class MenuSerializer extends JsonSerializer<Menu> {
         gen.writeStartObject();
 
         gen.writeNumberField("id", value.id());
-        gen.writeObjectField("restaurant", value.getRestaurant());
         gen.writeObjectField("actionDate", value.getActionDate());
+        gen.writeObjectField("restaurant", value.getRestaurant());
         gen.writeArrayFieldStart("dishes");
 
         for (Dish dish : value.getDishes()) {

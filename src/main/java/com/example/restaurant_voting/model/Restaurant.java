@@ -18,15 +18,20 @@ import java.io.Serializable;
 @Entity
 public class Restaurant extends BaseEntity implements Serializable {
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @NotEmpty
     @Size(max = 128)
     private String name;
 
+    public Restaurant(Integer id, @NotEmpty @Size(max = 128) String name) {
+        super(id);
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return "Restaurant{" +
-                "id='" + this.getId() + '\'' +
+                "id='" + id + '\'' +
                 ",name='" + name + '\'' +
                 '}';
     }

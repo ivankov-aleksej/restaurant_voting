@@ -61,6 +61,7 @@ public class RestaurantController {
 
     @PutMapping("/{id}")
     public ResponseEntity updateById(@PathVariable("id") Integer id, @RequestBody Restaurant restaurant) {
+        //TODO check id = restaurant.id, if empty , add id  else throws exception
         if (restaurantRepository.findById(id).isPresent()) {
             restaurant.setId(id);
             restaurantRepository.save(restaurant);
@@ -71,12 +72,14 @@ public class RestaurantController {
 
     @PostMapping("/{id}/menus")
     public ResponseEntity<Menu> createMenu(@PathVariable("id") final Integer id) {
-        Optional<Restaurant> restaurantOptional = restaurantRepository.findById(id);
-        if (restaurantOptional.isPresent() && menuRepository.findByDateWithRestaurantId(DateUtil.getTomorrow(), id).isEmpty()) {
-            Menu menu = new Menu();
-            menu.setActionDate(DateUtil.getTomorrow());
-            menu.setRestaurant(restaurantOptional.get());
-            return ResponseEntity.status(HttpStatus.CREATED).body(menuRepository.save(menu));
+        if (menuRepository.findByDateWithRestaurantId(DateUtil.getTomorrow(), id).isEmpty()) {
+            Optional<Restaurant> restaurantOptional = restaurantRepository.findById(id);
+            if (restaurantOptional.isPresent()) {
+                Menu menu = new Menu();
+                menu.setActionDate(DateUtil.getTomorrow());
+                menu.setRestaurant(restaurantOptional.get());
+                return ResponseEntity.status(HttpStatus.CREATED).body(menuRepository.save(menu));
+            }
         }
         return ResponseEntity.unprocessableEntity().build();
     }

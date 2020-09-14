@@ -17,6 +17,13 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@NamedEntityGraphs(value = {
+        @NamedEntityGraph(
+                name = "Vote.menu.restaurant",
+                attributeNodes = @NamedAttributeNode(value = "menu", subgraph = "menu.restaurant"),
+                subgraphs = @NamedSubgraph(name = "menu.restaurant", attributeNodes = @NamedAttributeNode("restaurant"))),
+        @NamedEntityGraph(name = "Vote.menu", attributeNodes = @NamedAttributeNode("menu"))
+})
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"date", "user_id"}, name = "date_user_id_unique")})
 public class Vote extends BaseEntity implements Serializable {
 

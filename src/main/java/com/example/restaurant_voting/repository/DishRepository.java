@@ -3,6 +3,7 @@ package com.example.restaurant_voting.repository;
 import com.example.restaurant_voting.model.Dish;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,22 +19,25 @@ public interface DishRepository extends JpaRepository<Dish, Integer> {
 
     @Transactional
     @Modifying
-    @Query("DELETE FROM Dish d WHERE d.id=:id")
-    int delete(@Param("id") int id);
+    @Query("DELETE FROM Dish d  WHERE d.id IN (SELECT d.id FROM Dish d INNER JOIN d.menu m " +
+            "WHERE d.id=:id and m.actionDate =:date)")
+    int delete(@Param("id") int id, @Param("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date);
 
-    @Query(value = "SELECT d FROM Dish d LEFT JOIN FETCH d.menu WHERE d.menu.actionDate=:date",
-            countQuery = "SELECT count(d) FROM Dish d")
+    @EntityGraph(value = "Dish.menu")
+    @Query(value = "select d from Dish d where d.menu.actionDate=:date", countQuery = "SELECT count(d) FROM Dish d")
     Page<Dish> findByDate(@Param("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, Pageable pageable);
 
-    @Query(value = "SELECT d FROM Dish d LEFT JOIN FETCH d.menu WHERE LOWER(d.name) LIKE CONCAT('%',LOWER(:name),'%')",
+    @EntityGraph(value = "Dish.menu")
+    @Query(value = "SELECT d FROM Dish d WHERE LOWER(d.name) LIKE CONCAT('%',LOWER(:name),'%')",
             countQuery = "SELECT count(d) FROM Dish d")
     Page<Dish> findByNameIgnoreCase(@Param("name") String name, Pageable pageable);
 
-    @Query("SELECT d FROM Dish d LEFT JOIN FETCH d.menu WHERE d.id=:id")
+    @EntityGraph(value = "Dish.menu")
+    @Query("select d from Dish d where d.id = :id")
     Optional<Dish> findByIdWithJoin(@Param("id") int id);
 
-    @Query(value = "SELECT d FROM Dish d LEFT JOIN FETCH d.menu",
-            countQuery = "SELECT count(d) FROM Dish d")
+    @EntityGraph(value = "Dish.menu")
+    @Query(value = "SELECT d FROM Dish d ", countQuery = "SELECT count(d) FROM Dish d")
     Page<Dish> findAllWithJoin(Pageable pageable);
 
 }
