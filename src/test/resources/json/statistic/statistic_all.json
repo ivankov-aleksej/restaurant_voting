@@ -1,0 +1,44 @@
+{
+  "content": [
+    {
+      "date": "2020-08-01",
+      "restaurant": {
+        "id": 103,
+        "name": "McDonalds"
+      },
+      "menu": {
+        "id": 105,
+        "actionDate": "2020-08-01"
+      },
+      "count": 1
+    },
+    {
+      "date": "2020-08-01",
+      "restaurant": {
+        "id": 104,
+        "name": "Burger King"
+      },
+      "menu": {
+        "id": 106,
+        "actionDate": "2020-08-01"
+      },
+      "count": 2
+    },
+    {
+      "date": "2020-08-02",
+      "restaurant": {
+        "id": 103,
+        "name": "McDonalds"
+      },
+      "menu": {
+        "id": 107,
+        "actionDate": "2020-08-02"
+      },
+      "count": 2
+    }
+  ],
+  "size": 20,
+  "totalElements": 3,
+  "totalPages": 1,
+  "number": 0
+}
