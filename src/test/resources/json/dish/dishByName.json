@@ -1,0 +1,44 @@
+{
+  "content": [
+    {
+      "id": 110,
+      "name": "Ролл з креветками",
+      "price": 1.54,
+      "menu": {
+        "id": 105,
+        "actionDate": "2020-08-01"
+      }
+    },
+    {
+      "id": 112,
+      "name": "Чикен Ролл",
+      "price": 1.87,
+      "menu": {
+        "id": 106,
+        "actionDate": "2020-08-01"
+      }
+    },
+    {
+      "id": 114,
+      "name": "Ролл з креветками",
+      "price": 1.64,
+      "menu": {
+        "id": 107,
+        "actionDate": "2020-08-02"
+      }
+    },
+    {
+      "id": 116,
+      "name": "Чикен Ролл",
+      "price": 1.77,
+      "menu": {
+        "id": 108,
+        "actionDate": "2020-08-02"
+      }
+    }
+  ],
+  "size": 20,
+  "totalElements": 4,
+  "totalPages": 1,
+  "number": 0
+}

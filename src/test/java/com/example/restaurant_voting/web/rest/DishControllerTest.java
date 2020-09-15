@@ -6,12 +6,8 @@ import org.mockito.MockedStatic;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.time.LocalDate;
-
 import static com.example.restaurant_voting.TestUtil.userHttpBasic;
-import static com.example.restaurant_voting.UserTestData.ADMIN;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static com.example.restaurant_voting.UserTestData.*;
 import static org.mockito.Mockito.mockStatic;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -28,9 +24,6 @@ class DishControllerTest extends AbstractControllerTest {
     /**
      * Warning. Remember, delete or update or create only if DATE menu is FUTURE.
      */
-    private final static LocalDate TOMORROW_DATE = LocalDate.parse("2020-08-03");
-    private final static LocalDate CURRENT_DATE = LocalDate.parse("2020-08-02");
-    private final static LocalDate YESTERDAY_DATE = LocalDate.parse("2020-08-01");
 
     @Test
     void getAll() throws Exception {
@@ -39,17 +32,19 @@ class DishControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content()
-                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(readFile(PACKAGE_JSON + "dishAll.json"), true));
     }
 
     @Test
     void getByDate() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL_BY_DATE)
-                .with(userHttpBasic(ADMIN)))
+                .with(userHttpBasic(USER1)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content()
-                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(readFile(PACKAGE_JSON + "dishByDate.json"), true));
     }
 
     @Test
@@ -59,73 +54,151 @@ class DishControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content()
-                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(readFile(PACKAGE_JSON + "dishByName.json"), true));
     }
 
     @Test
     void getById() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + DISH_ID)
-                .with(userHttpBasic(ADMIN)))
+                .with(userHttpBasic(USER1)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content()
-                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(readFile(PACKAGE_JSON + "dish.json"), true));
     }
 
-    //    https://stackoverflow.com/questions/52830441/junit5-mock-a-static-method
-    //    https://javadoc.io/static/org.mockito/mockito-core/3.4.6/org/mockito/Mockito.html#static_mocks
     @Test
-    @SuppressWarnings("unchecked")
-    void deleteDishWithTomorrowDateMenu() throws Exception {
-        assertNotEquals(YESTERDAY_DATE, DateUtil.getDate());
+    void getByIdNotFound() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + NOT_FOUND_ID)
+                .with(userHttpBasic(USER1)))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(content().json(readFile(PACKAGE_JSON + "dishExceptionNotFound.json"), true));
+    }
+
+    @Test
+    void deleteWithTomorrowDateMenu() throws Exception {
         try (MockedStatic mocked = mockStatic(DateUtil.class)) {
-            mocked.when(DateUtil::getDate).thenReturn(YESTERDAY_DATE);
-            mocked.when(DateUtil::getTomorrow).thenReturn(CURRENT_DATE);
-            assertEquals(YESTERDAY_DATE, DateUtil.getDate());
+            mockedDateUtil(mocked, YESTERDAY_DATE, CURRENT_DATE);
 
             perform(MockMvcRequestBuilders.delete(REST_URL + DISH_ID)
                     .with(userHttpBasic(ADMIN)))
                     .andDo(print())
                     .andExpect(status().isNoContent());
         }
-        assertNotEquals(YESTERDAY_DATE, DateUtil.getDate());
     }
 
     @Test
-    @SuppressWarnings("unchecked")
-    void updateDishWithTomorrowDateMenu() throws Exception {
-        assertNotEquals(YESTERDAY_DATE, DateUtil.getDate());
+    void deleteWithNotTomorrowDateMenu() throws Exception {
+        perform(MockMvcRequestBuilders.delete(REST_URL + DISH_ID)
+                .with(userHttpBasic(ADMIN)))
+                .andExpect(status().isUnprocessableEntity())
+                .andDo(print())
+                .andExpect(content().json(readFile(PACKAGE_JSON + "dishExceptionExpiredDate.json"), true));
+    }
+
+    @Test
+    void deleteWithTomorrowDateMenuForbidden() throws Exception {
         try (MockedStatic mocked = mockStatic(DateUtil.class)) {
-            mocked.when(DateUtil::getDate).thenReturn(YESTERDAY_DATE);
-            mocked.when(DateUtil::getTomorrow).thenReturn(CURRENT_DATE);
-            assertEquals(YESTERDAY_DATE, DateUtil.getDate());
+            mockedDateUtil(mocked, YESTERDAY_DATE, CURRENT_DATE);
+
+            perform(MockMvcRequestBuilders.delete(REST_URL + DISH_ID)
+                    .with(userHttpBasic(USER2)))
+                    .andDo(print())
+                    .andExpect(status().isForbidden());
+        }
+    }
+
+    @Test
+    void updateWithTomorrowDateMenu() throws Exception {
+        try (MockedStatic mocked = mockStatic(DateUtil.class)) {
+            mockedDateUtil(mocked, YESTERDAY_DATE, CURRENT_DATE);
 
             perform(MockMvcRequestBuilders.put(REST_URL + DISH_ID)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(readFile(PACKAGE_JSON + "dish_create_update.json"))
+                    .content(readFile(PACKAGE_JSON + "dishCreateOrUpdate.json"))
                     .with(userHttpBasic(ADMIN)))
                     .andDo(print())
                     .andExpect(status().isNoContent());
         }
-        assertNotEquals(YESTERDAY_DATE, DateUtil.getDate());
     }
 
     @Test
-    @SuppressWarnings("unchecked")
-    void createDishWithTomorrowDateMenu() throws Exception {
-        assertNotEquals(YESTERDAY_DATE, DateUtil.getDate());
+    void updateWithNotNextDateMenu() throws Exception {
+        perform(MockMvcRequestBuilders.put(REST_URL + DISH_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(readFile(PACKAGE_JSON + "dishCreateOrUpdate.json"))
+                .with(userHttpBasic(ADMIN)))
+                .andExpect(status().isUnprocessableEntity())
+                .andDo(print())
+                .andExpect(content().json(readFile(PACKAGE_JSON + "dishExceptionUpdateExpiredDate.json"), true));
+    }
+
+    @Test
+    void updateWithTomorrowDateMenuForbidden() throws Exception {
         try (MockedStatic mocked = mockStatic(DateUtil.class)) {
-            mocked.when(DateUtil::getDate).thenReturn(YESTERDAY_DATE);
-            mocked.when(DateUtil::getTomorrow).thenReturn(CURRENT_DATE);
-            assertEquals(YESTERDAY_DATE, DateUtil.getDate());
+            mockedDateUtil(mocked, YESTERDAY_DATE, CURRENT_DATE);
+
+            perform(MockMvcRequestBuilders.put(REST_URL + DISH_ID)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(readFile(PACKAGE_JSON + "dishCreateOrUpdate.json"))
+                    .with(userHttpBasic(USER1)))
+                    .andDo(print())
+                    .andExpect(status().isForbidden());
+        }
+    }
+
+    @Test
+    void createWithTomorrowDateMenu() throws Exception {
+        try (MockedStatic mocked = mockStatic(DateUtil.class)) {
+            mockedDateUtil(mocked, YESTERDAY_DATE, CURRENT_DATE);
 
             perform(MockMvcRequestBuilders.post(MenuControllerTest.REST_URL + MenuControllerTest.MENU_ID + "/dishes")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(readFile(PACKAGE_JSON + "dish_create_update.json"))
+                    .content(readFile(PACKAGE_JSON + "dishCreateOrUpdate.json"))
                     .with(userHttpBasic(ADMIN)))
                     .andDo(print())
-                    .andExpect(status().isCreated());
+                    .andExpect(status().isCreated())
+                    .andExpect(content().json(readFile(PACKAGE_JSON + "dishCreated.json"), true));
         }
-        assertNotEquals(YESTERDAY_DATE, DateUtil.getDate());
+    }
+
+    @Test
+    void createWithNotTomorrowDateMenu() throws Exception {
+        perform(MockMvcRequestBuilders.post(MenuControllerTest.REST_URL + MenuControllerTest.MENU_ID + "/dishes")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(readFile(PACKAGE_JSON + "dishCreateOrUpdate.json"))
+                .with(userHttpBasic(ADMIN)))
+                .andExpect(status().isUnprocessableEntity())
+                .andDo(print())
+                .andExpect(content().json(readFile(PACKAGE_JSON + "dishExceptionCreateExpiredDate.json"), true));
+    }
+
+    @Test
+    void createWithNotFoundMenu() throws Exception {
+        perform(MockMvcRequestBuilders.post(MenuControllerTest.REST_URL + NOT_FOUND_ID + "/dishes")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(readFile(PACKAGE_JSON + "dishCreateOrUpdate.json"))
+                .with(userHttpBasic(ADMIN)))
+                .andExpect(status().isUnprocessableEntity())
+                .andDo(print())
+                .andExpect(content().json(readFile(PACKAGE_JSON + "dishExceptionCreateNotFoundMenu.json"), true));
+    }
+
+    @Test
+    void createWithTomorrowDateMenuForbidden() throws Exception {
+        try (MockedStatic mocked = mockStatic(DateUtil.class)) {
+            mockedDateUtil(mocked, YESTERDAY_DATE, CURRENT_DATE);
+
+            perform(MockMvcRequestBuilders.post(MenuControllerTest.REST_URL + MenuControllerTest.MENU_ID + "/dishes")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(readFile(PACKAGE_JSON + "dishCreateOrUpdate.json"))
+                    .with(userHttpBasic(USER2)))
+                    .andDo(print())
+                    .andExpect(status().isForbidden());
+        }
     }
 }

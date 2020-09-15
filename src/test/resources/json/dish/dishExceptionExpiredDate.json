@@ -1,0 +1,8 @@
+{
+  "url": "/api/dishes/114",
+  "type": "EXPIRED_DATE",
+  "typeMessage": "Expired date",
+  "details": [
+    "Expired date for entity with id=114"
+  ]
+}

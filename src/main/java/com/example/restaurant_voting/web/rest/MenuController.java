@@ -79,11 +79,10 @@ public class MenuController {
     @PostMapping("/{id}/dishes")
     public ResponseEntity<Dish> createDish(@PathVariable("id") final int id, @Validated(View.Web.class) @RequestBody Dish dish) {
         Optional<Menu> menuOptional = menuRepository.findById(id);
-        if (menuOptional.isPresent() && menuOptional.get().getActionDate().equals(DateUtil.getTomorrow())) {
-            dish.setMenu(menuOptional.get());
-            return ResponseEntity.status(HttpStatus.CREATED).body(dishRepository.save(dish));
-        }
-        return ResponseEntity.unprocessableEntity().build();
+        Menu menu = menuOptional.orElseThrow(() -> new NotFoundException("id=" + id));
+        checkExpiredDate(menu.getActionDate(), id);
+        dish.setMenu(menu);
+        return ResponseEntity.status(HttpStatus.CREATED).body(dishRepository.save(dish));
     }
 
     @PostMapping("/{id}/votes")

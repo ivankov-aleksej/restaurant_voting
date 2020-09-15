@@ -1,0 +1,8 @@
+{
+  "url": "/api/menus/1000/dishes",
+  "type": "DATA_NOT_FOUND",
+  "typeMessage": "Data not found",
+  "details": [
+    "Not found entity with id=1000"
+  ]
+}

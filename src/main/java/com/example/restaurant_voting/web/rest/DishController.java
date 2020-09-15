@@ -3,7 +3,7 @@ package com.example.restaurant_voting.web.rest;
 import com.example.restaurant_voting.View;
 import com.example.restaurant_voting.model.Dish;
 import com.example.restaurant_voting.repository.DishRepository;
-import com.example.restaurant_voting.util.DateUtil;
+import com.example.restaurant_voting.util.exception.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import static com.example.restaurant_voting.util.EntityUtil.updateDish;
+import static com.example.restaurant_voting.util.ValidationUtil.checkExpiredDate;
 
 @RestController
 @RequestMapping(value = DishController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -49,30 +50,26 @@ public class DishController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Dish> getById(@PathVariable("id") Integer id) {
+    public ResponseEntity<Dish> getById(@PathVariable("id") final int id) {
         Optional<Dish> dishOptional = dishRepository.findByIdWithJoin(id);
-        if (dishOptional.isPresent()) {
-            return ResponseEntity.ok(dishOptional.get());
-        }
-        return ResponseEntity.unprocessableEntity().build();
+        return ResponseEntity.ok(dishOptional.orElseThrow(() -> new NotFoundException("id=" + id)));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable("id") final Integer id) {
-        if (dishRepository.delete(id, DateUtil.getTomorrow()) != 0) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.unprocessableEntity().build();
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("id") final int id) {
+        Optional<Dish> dishOptional = dishRepository.findByIdWithJoin(id);
+        Dish dish = dishOptional.orElseThrow(() -> new NotFoundException("id=" + id));
+        checkExpiredDate(dish.getMenu().getActionDate(), id);
+        dishRepository.deleteById(id);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity updateById(@PathVariable("id") Integer id, @Validated(View.Web.class) @RequestBody final Dish dish) {
-        Optional<Dish> optionalDish = dishRepository.findByIdWithJoin(id);
-        if (optionalDish.isPresent() && optionalDish.get().getMenu().getActionDate().equals(DateUtil.getTomorrow())) {
-            dishRepository.save(updateDish(optionalDish.get(), dish));
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.unprocessableEntity().build();
-        }
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateById(@PathVariable("id") final int id, @Validated(View.Web.class) @RequestBody final Dish dish) {
+        Optional<Dish> dishOptional = dishRepository.findByIdWithJoin(id);
+        Dish dishDb = dishOptional.orElseThrow(() -> new NotFoundException("id=" + id));
+        checkExpiredDate(dishDb.getMenu().getActionDate(), id);
+        dishRepository.save(updateDish(dishDb, dish));
     }
 }

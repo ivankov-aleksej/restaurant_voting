@@ -1,0 +1,44 @@
+{
+  "content": [
+    {
+      "id": 109,
+      "name": "Гамбургер",
+      "price": 1.04,
+      "menu": {
+        "id": 105,
+        "actionDate": "2020-08-01"
+      }
+    },
+    {
+      "id": 110,
+      "name": "Ролл з креветками",
+      "price": 1.54,
+      "menu": {
+        "id": 105,
+        "actionDate": "2020-08-01"
+      }
+    },
+    {
+      "id": 111,
+      "name": "Роял Фреш",
+      "price": 1.14,
+      "menu": {
+        "id": 106,
+        "actionDate": "2020-08-01"
+      }
+    },
+    {
+      "id": 112,
+      "name": "Чикен Ролл",
+      "price": 1.87,
+      "menu": {
+        "id": 106,
+        "actionDate": "2020-08-01"
+      }
+    }
+  ],
+  "size": 20,
+  "totalElements": 4,
+  "totalPages": 1,
+  "number": 0
+}
