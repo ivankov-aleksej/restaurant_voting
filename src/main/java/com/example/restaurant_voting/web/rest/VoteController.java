@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 import static com.example.restaurant_voting.AuthUser.authUserId;
 
@@ -27,12 +26,6 @@ public class VoteController {
         this.voteService = voteService;
     }
 
-    @PostMapping("/{menuId}")
-    public ResponseEntity<Vote> vote(@PathVariable("menuId") Integer menuId) {
-        Vote vote = voteService.save(menuId, authUserId());
-        return ResponseEntity.status(HttpStatus.CREATED).body(vote);
-    }
-
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete() {
@@ -41,21 +34,15 @@ public class VoteController {
 
     @GetMapping("/current")
     public ResponseEntity<Vote> getCurrent() {
-        Optional<Vote> voteOptional = voteService.getByDate(DateUtil.getDate(), authUserId());
-        if (voteOptional.isPresent()) {
-            return ResponseEntity.ok(voteOptional.get());
-        }
-        return ResponseEntity.unprocessableEntity().build();
+        Vote vote = voteService.getByDate(DateUtil.getDate(), authUserId());
+        return ResponseEntity.ok(vote);
     }
 
     @GetMapping("/byDate")
     public ResponseEntity<Vote> getByDate(
             @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        Optional<Vote> voteOptional = voteService.getByDate(date, authUserId());
-        if (voteOptional.isPresent()) {
-            return ResponseEntity.ok(voteOptional.get());
-        }
-        return ResponseEntity.unprocessableEntity().build();
+        Vote vote = voteService.getByDate(date, authUserId());
+        return ResponseEntity.ok(vote);
     }
 
     @GetMapping

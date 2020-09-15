@@ -1,0 +1,12 @@
+{
+  "id": 200,
+  "date": "2020-08-02",
+  "restaurant": {
+    "id": 104,
+    "name": "Burger King"
+  },
+  "menu": {
+    "id": 108,
+    "actionDate": "2020-08-02"
+  }
+}

@@ -3,8 +3,10 @@ package com.example.restaurant_voting.web.rest;
 import com.example.restaurant_voting.View;
 import com.example.restaurant_voting.model.Dish;
 import com.example.restaurant_voting.model.Menu;
+import com.example.restaurant_voting.model.Vote;
 import com.example.restaurant_voting.repository.DishRepository;
 import com.example.restaurant_voting.repository.MenuRepository;
+import com.example.restaurant_voting.service.VoteService;
 import com.example.restaurant_voting.util.DateUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import static com.example.restaurant_voting.AuthUser.authUserId;
+
 @RestController
 @RequestMapping(value = MenuController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class MenuController {
@@ -27,10 +31,13 @@ public class MenuController {
 
     private final DishRepository dishRepository;
 
+    private final VoteService voteService;
+
     public MenuController(MenuRepository menuRepository,
-                          DishRepository dishRepository) {
+                          DishRepository dishRepository, VoteService voteService) {
         this.menuRepository = menuRepository;
         this.dishRepository = dishRepository;
+        this.voteService = voteService;
     }
 
     @GetMapping
@@ -78,5 +85,11 @@ public class MenuController {
             return ResponseEntity.status(HttpStatus.CREATED).body(dishRepository.save(dish));
         }
         return ResponseEntity.unprocessableEntity().build();
+    }
+
+    @PostMapping("/{id}/votes")
+    public ResponseEntity<Vote> createVote(@PathVariable("id") final int menuId) {
+        Vote vote = voteService.save(menuId, authUserId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(vote);
     }
 }

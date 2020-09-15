@@ -51,12 +51,10 @@ public class VoteService {
         return voteRepository.findAll(pageable, userId);
     }
 
-    public Optional<Vote> getByDate(LocalDate date, int userId) {
+    public Vote getByDate(LocalDate date, int userId) {
         List<Vote> votes = voteRepository.findByDateJoin(date, userId);
-        if (votes.isEmpty()) {
-            return Optional.empty();
-        }
-        return Optional.of(votes.get(0));
+        checkNotFound(!votes.isEmpty(), NOT_FOUND_CURRENT_DATE);
+        return votes.get(0);
     }
 
     @Transactional

@@ -187,11 +187,11 @@ class VoteServiceTest {
 
     @Test
     void getByDate() {
-        assertTrue(voteService.getByDate(CURRENT_DATE, userOneId).isPresent());
+        assertNotNull(voteService.getByDate(CURRENT_DATE, userOneId));
     }
 
     @Test
     void getByDateNotFound() {
-        assertTrue(voteService.getByDate(TOMORROW_DATE, userOneId).isEmpty());
+        assertThrows(NotFoundException.class, () -> voteService.getByDate(TOMORROW_DATE, userOneId));
     }
 }

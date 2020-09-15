@@ -1,0 +1,8 @@
+{
+  "url": "/api/votes/",
+  "type": "DATA_NOT_FOUND",
+  "typeMessage": "Data not found",
+  "details": [
+    "Not found entity with current date"
+  ]
+}

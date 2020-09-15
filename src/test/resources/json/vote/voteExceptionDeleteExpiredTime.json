@@ -1,0 +1,8 @@
+{
+  "url": "/api/votes/",
+  "type": "EXPIRED_TIME",
+  "typeMessage": "Expired time",
+  "details": [
+    "Expired time for voting"
+  ]
+}

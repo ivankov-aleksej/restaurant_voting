@@ -1,5 +1,6 @@
 package com.example.restaurant_voting.model;
 
+import com.example.restaurant_voting.util.DateUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,7 +42,7 @@ public class Vote extends BaseEntity implements Serializable {
 
     @Column(name = "date", updatable = false, columnDefinition = "DATE DEFAULT CURRENT_DATE")
     @NotNull
-    private LocalDate date = LocalDate.now();
+    private LocalDate date = DateUtil.getDate();
 
     public Vote(@NotNull Menu menu, @NotNull User user) {
         this.user = user;

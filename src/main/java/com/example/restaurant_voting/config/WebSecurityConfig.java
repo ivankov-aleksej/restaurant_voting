@@ -56,6 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/account/").hasRole(Role.USER.name())
                 .antMatchers(HttpMethod.GET, "/api/restaurants/**").hasRole(Role.USER.name())
                 .antMatchers(HttpMethod.GET, "/api/menus/**").hasRole(Role.USER.name())
+                .antMatchers(HttpMethod.POST, "/api/menus/*/votes").hasRole(Role.USER.name())
                 .antMatchers(HttpMethod.GET, "/api/dishes/**").hasRole(Role.USER.name())
                 .antMatchers("/api/statistic/**").hasRole(Role.USER.name())
                 .antMatchers("/api/votes/**").hasRole(Role.USER.name())
