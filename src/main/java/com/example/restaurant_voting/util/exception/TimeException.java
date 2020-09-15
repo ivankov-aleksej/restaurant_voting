@@ -1,9 +1,9 @@
 package com.example.restaurant_voting.util.exception;
 
-public class TimeException extends RuntimeException {
-    private static final String TIME_EXPIRED_EXCEPTION = "time is expired";
+public class TimeException extends ApplicationException {
+    private static final String EXPIRED_TIME_FOR_VOTING_EXCEPTION = "Expired time for voting";
 
     public TimeException() {
-        super(TIME_EXPIRED_EXCEPTION);
+        super(ErrorType.EXPIRED_TIME, EXPIRED_TIME_FOR_VOTING_EXCEPTION, "");
     }
 }
