@@ -17,20 +17,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class MenuRepositoryIntegrationTest {
 
     private final static Integer MENU_ID = 105;
-    private final static Integer MENU_NOT_FOUND_ID = 1;
     private final LocalDate DATE = LocalDate.parse("2020-08-01");
     @Autowired
     private MenuRepository menuRepository;
-
-    @Test
-    void delete() {
-        assertEquals(1, menuRepository.deleteWithDate(DATE, MENU_ID));
-    }
-
-    @Test
-    void deleteNotFound() {
-        assertEquals(0, menuRepository.deleteWithDate(DATE, MENU_NOT_FOUND_ID));
-    }
 
     @Test
     void findByName() {

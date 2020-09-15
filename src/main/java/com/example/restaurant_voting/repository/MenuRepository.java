@@ -5,30 +5,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 @Transactional(readOnly = true)
 public interface MenuRepository extends JpaRepository<Menu, Integer> {
 
-    @Transactional
-    @Modifying
-    @Query("DELETE FROM Menu m WHERE m.id=:id AND m.actionDate=:date")
-    int deleteWithDate(@Param("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @Param("id") int id);
-
     @EntityGraph(value = "Menu.restaurant.dishes")
     @Query(value = "SELECT m FROM Menu m WHERE m.actionDate=:date", countQuery = "SELECT count(m) FROM Menu m")
     Page<Menu> findByDateWithJoin(@Param("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, Pageable pageable);
-
-    @Query(value = "SELECT m FROM Menu m  WHERE m.actionDate=:date AND m.restaurant.id=:id")
-    List<Menu> findByDateWithRestaurantId(@Param("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @Param("id") Integer id);
 
     @EntityGraph(value = "Menu.restaurant.dishes")
     @Query("SELECT m FROM Menu m  WHERE m.id=:id")

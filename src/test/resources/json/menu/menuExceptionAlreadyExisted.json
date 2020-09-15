@@ -1,0 +1,8 @@
+{
+  "url": "/api/restaurants/103/menus",
+  "type": "UNIQUE_ERROR",
+  "typeMessage": "Unique error",
+  "details": [
+    "menu already existed"
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "content": [
+    {
+      "id": 105,
+      "actionDate": "2020-08-01",
+      "restaurant": {
+        "id": 103,
+        "name": "McDonalds"
+      },
+      "dishes": [
+        {
+          "id": 109,
+          "name": "Гамбургер",
+          "price": 1.04
+        },
+        {
+          "id": 110,
+          "name": "Ролл з креветками",
+          "price": 1.54
+        }
+      ]
+    },
+    {
+      "id": 106,
+      "actionDate": "2020-08-01",
+      "restaurant": {
+        "id": 104,
+        "name": "Burger King"
+      },
+      "dishes": [
+        {
+          "id": 111,
+          "name": "Роял Фреш",
+          "price": 1.14
+        },
+        {
+          "id": 112,
+          "name": "Чикен Ролл",
+          "price": 1.87
+        }
+      ]
+    },
+    {
+      "id": 107,
+      "actionDate": "2020-08-02",
+      "restaurant": {
+        "id": 103,
+        "name": "McDonalds"
+      },
+      "dishes": [
+        {
+          "id": 113,
+          "name": "Гамбургер",
+          "price": 1.14
+        },
+        {
+          "id": 114,
+          "name": "Ролл з креветками",
+          "price": 1.64
+        }
+      ]
+    },
+    {
+      "id": 108,
+      "actionDate": "2020-08-02",
+      "restaurant": {
+        "id": 104,
+        "name": "Burger King"
+      },
+      "dishes": [
+        {
+          "id": 115,
+          "name": "Роял Фреш",
+          "price": 1.24
+        },
+        {
+          "id": 116,
+          "name": "Чикен Ролл",
+          "price": 1.77
+        }
+      ]
+    }
+  ],
+  "size": 20,
+  "totalElements": 4,
+  "totalPages": 1,
+  "number": 0
+}

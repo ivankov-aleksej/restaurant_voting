@@ -8,6 +8,7 @@ import com.example.restaurant_voting.repository.DishRepository;
 import com.example.restaurant_voting.repository.MenuRepository;
 import com.example.restaurant_voting.service.VoteService;
 import com.example.restaurant_voting.util.DateUtil;
+import com.example.restaurant_voting.util.exception.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -21,6 +22,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import static com.example.restaurant_voting.AuthUser.authUserId;
+import static com.example.restaurant_voting.util.ValidationUtil.checkExpiredDate;
 
 @RestController
 @RequestMapping(value = MenuController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -60,25 +62,22 @@ public class MenuController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Menu> getById(@PathVariable("id") Integer id) {
+    public ResponseEntity<Menu> getById(@PathVariable("id") final int id) {
         Optional<Menu> menuOptional = menuRepository.findByIdWithJoin(id);
-        if (menuOptional.isPresent()) {
-            return ResponseEntity.ok(menuOptional.get());
-        }
-        return ResponseEntity.unprocessableEntity().build();
-
+        return ResponseEntity.ok(menuOptional.orElseThrow(() -> new NotFoundException("id=" + id)));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable("id") final Integer id) {
-        if (menuRepository.deleteWithDate(DateUtil.getTomorrow(), id) != 0) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.unprocessableEntity().build();
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("id") final int id) {
+        Optional<Menu> menuOptional = menuRepository.findByIdWithJoin(id);
+        Menu menu = menuOptional.orElseThrow(() -> new NotFoundException("id=" + id));
+        checkExpiredDate(menu.getActionDate(), id);
+        menuRepository.deleteById(id);
     }
 
     @PostMapping("/{id}/dishes")
-    public ResponseEntity<Dish> createDish(@PathVariable("id") final Integer id, @Validated(View.Web.class) @RequestBody Dish dish) {
+    public ResponseEntity<Dish> createDish(@PathVariable("id") final int id, @Validated(View.Web.class) @RequestBody Dish dish) {
         Optional<Menu> menuOptional = menuRepository.findById(id);
         if (menuOptional.isPresent() && menuOptional.get().getActionDate().equals(DateUtil.getTomorrow())) {
             dish.setMenu(menuOptional.get());

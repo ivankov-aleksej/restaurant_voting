@@ -1,0 +1,20 @@
+{
+  "id": 107,
+  "actionDate": "2020-08-02",
+  "restaurant": {
+    "id": 103,
+    "name": "McDonalds"
+  },
+  "dishes": [
+    {
+      "id": 113,
+      "name": "Гамбургер",
+      "price": 1.14
+    },
+    {
+      "id": 114,
+      "name": "Ролл з креветками",
+      "price": 1.64
+    }
+  ]
+}
