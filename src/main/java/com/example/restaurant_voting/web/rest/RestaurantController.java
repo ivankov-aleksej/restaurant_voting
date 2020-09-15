@@ -1,18 +1,23 @@
 package com.example.restaurant_voting.web.rest;
 
+import com.example.restaurant_voting.View;
 import com.example.restaurant_voting.model.Menu;
 import com.example.restaurant_voting.model.Restaurant;
 import com.example.restaurant_voting.repository.MenuRepository;
 import com.example.restaurant_voting.repository.RestaurantRepository;
 import com.example.restaurant_voting.util.DateUtil;
+import com.example.restaurant_voting.util.exception.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+
+import static com.example.restaurant_voting.util.ValidationUtil.*;
 
 @RestController
 @RequestMapping(value = RestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -41,47 +46,40 @@ public class RestaurantController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Restaurant> getById(@PathVariable("id") Integer id) {
-        Optional<Restaurant> restaurant = restaurantRepository.findById(id);
-        if (restaurant.isPresent()) {
-            return ResponseEntity.ok(restaurant.get());
-        }
-        return ResponseEntity.unprocessableEntity().build();
+    public ResponseEntity<Restaurant> getById(@PathVariable("id") final int id) {
+        Optional<Restaurant> restaurantOptional = restaurantRepository.findById(id);
+        return ResponseEntity.ok(restaurantOptional.orElseThrow(() -> new NotFoundException("id=" + id)));
     }
 
     @PostMapping
-    public ResponseEntity<Restaurant> create(@RequestBody final Restaurant restaurant) {
+    public ResponseEntity<Restaurant> create(@Validated(View.Web.class) @RequestBody final Restaurant restaurant) {
+        checkNew(restaurant);
         return ResponseEntity.status(HttpStatus.CREATED).body(restaurantRepository.save(restaurant));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable("id") final Integer id) {
-        return (restaurantRepository.delete(id) != 0 ? ResponseEntity.noContent() : ResponseEntity.unprocessableEntity()).build();
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("id") final int id) {
+        checkNotFoundCountWithId(restaurantRepository.delete(id), id);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity updateById(@PathVariable("id") Integer id, @RequestBody Restaurant restaurant) {
-        //TODO check id = restaurant.id, if empty , add id  else throws exception
-        if (restaurantRepository.findById(id).isPresent()) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void update(@PathVariable("id") final int id, @Validated(View.Web.class) @RequestBody final Restaurant restaurant) {
+        if (!assureIdConsistent(restaurant, id)) {
             restaurant.setId(id);
-            restaurantRepository.save(restaurant);
-            return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.unprocessableEntity().build();
+        Optional<Restaurant> restaurantOptional = restaurantRepository.findById(id);
+        checkNotFoundWithId(restaurantOptional.isPresent(), id);
+        restaurantRepository.save(restaurant);
     }
 
     @PostMapping("/{id}/menus")
-    public ResponseEntity<Menu> createMenu(@PathVariable("id") final Integer id) {
-        if (menuRepository.findByDateWithRestaurantId(DateUtil.getTomorrow(), id).isEmpty()) {
-            Optional<Restaurant> restaurantOptional = restaurantRepository.findById(id);
-            if (restaurantOptional.isPresent()) {
-                Menu menu = new Menu();
-                menu.setActionDate(DateUtil.getTomorrow());
-                menu.setRestaurant(restaurantOptional.get());
-                return ResponseEntity.status(HttpStatus.CREATED).body(menuRepository.save(menu));
-            }
-        }
-        return ResponseEntity.unprocessableEntity().build();
+    public ResponseEntity<Menu> createMenu(@PathVariable("id") final int id) {
+        Optional<Restaurant> restaurantOptional = restaurantRepository.findById(id);
+        Menu menu = new Menu();
+        menu.setActionDate(DateUtil.getTomorrow());
+        menu.setRestaurant(restaurantOptional.orElseThrow(() -> new NotFoundException("id=" + id)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(menuRepository.save(menu));
     }
 }
-

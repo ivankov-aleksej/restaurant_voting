@@ -1,0 +1,8 @@
+{
+  "url": "/api/restaurants/",
+  "type": "WRONG_REQUEST",
+  "typeMessage": "Wrong request",
+  "details": [
+    "JSON parse error: Unexpected character (']' (code 93)): was expecting double-quote to start field name"
+  ]
+}

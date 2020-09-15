@@ -1,0 +1,8 @@
+{
+  "url": "/api/restaurants/",
+  "type": "VALIDATION_ERROR",
+  "typeMessage": "Validation error",
+  "details": [
+    "name must not be empty"
+  ]
+}

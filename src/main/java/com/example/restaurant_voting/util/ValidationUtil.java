@@ -18,6 +18,10 @@ public class ValidationUtil {
         return object;
     }
 
+    public static void checkNotFoundCountWithId(int objectId, int id) {
+        checkNotFound(objectId != 0, "id=" + id);
+    }
+
     public static void checkNotFoundWithId(boolean found, int id) {
         checkNotFound(found, "id=" + id);
     }
@@ -30,7 +34,7 @@ public class ValidationUtil {
 
     public static void checkNew(BaseEntity entity) {
         if (!entity.isNew()) {
-            throw new IllegalRequestDataException(entity + " must be new (id=null)");
+            throw new IllegalRequestDataException("must be new (id=null)");
         }
     }
 
@@ -39,7 +43,7 @@ public class ValidationUtil {
         if (entity.isNew()) {
             return false;
         } else if (entity.id() != id) {
-            throw new IllegalRequestDataException(entity + " must be with id=" + id);
+            throw new IllegalRequestDataException(" must be with id=" + id);
         }
         return true;
     }

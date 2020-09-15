@@ -32,6 +32,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 abstract class AbstractControllerTest {
 
     private static final CharacterEncodingFilter CHARACTER_ENCODING_FILTER = new CharacterEncodingFilter();
+    final static Integer NOT_FOUND_ID = 1000;
 
     protected final static LocalDate TOMORROW_DATE = LocalDate.parse("2020-08-03");
     protected final static LocalDate CURRENT_DATE = LocalDate.parse("2020-08-02");

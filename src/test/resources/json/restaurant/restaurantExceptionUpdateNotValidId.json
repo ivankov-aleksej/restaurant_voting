@@ -1,0 +1,8 @@
+{
+  "url": "/api/restaurants/103",
+  "type": "VALIDATION_ERROR",
+  "typeMessage": "Validation error",
+  "details": [
+    " must be with id=103"
+  ]
+}

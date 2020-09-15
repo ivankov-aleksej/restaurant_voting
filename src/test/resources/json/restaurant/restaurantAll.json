@@ -1,0 +1,16 @@
+{
+  "content": [
+    {
+      "id": 103,
+      "name": "McDonalds"
+    },
+    {
+      "id": 104,
+      "name": "Burger King"
+    }
+  ],
+  "size": 20,
+  "totalElements": 2,
+  "totalPages": 1,
+  "number": 0
+}
