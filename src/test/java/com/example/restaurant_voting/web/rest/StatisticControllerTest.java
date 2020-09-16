@@ -36,7 +36,7 @@ class StatisticControllerTest extends AbstractControllerTest {
                     .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                    .andExpect(content().json(readFile(PACKAGE_JSON + "statistic_current_byDate.json"), true));
+                    .andExpect(content().json(readFile(PACKAGE_JSON + "statisticCurrentByDate.json"), true));
         }
         assertNotEquals(CURRENT_DATE, DateUtil.getDate());
     }
@@ -48,7 +48,7 @@ class StatisticControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(readFile(PACKAGE_JSON + "statistic_current_byDate.json"), true));
+                .andExpect(content().json(readFile(PACKAGE_JSON + "statisticCurrentByDate.json"), true));
     }
 
     @Test
@@ -58,6 +58,6 @@ class StatisticControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(readFile(PACKAGE_JSON + "statistic_all.json"), true));
+                .andExpect(content().json(readFile(PACKAGE_JSON + "statisticAll.json"), true));
     }
 }

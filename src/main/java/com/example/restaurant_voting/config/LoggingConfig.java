@@ -21,25 +21,25 @@ public class LoggingConfig {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Pointcut("execution(public * com.example.restaurant_voting.web.rest.RestaurantController.*(..)) " +
-            "&& !@annotation(com.example.restaurant_voting.config.NoLogging)")
+            "&& !@annotation(com.example.restaurant_voting.config.serializer.NoLogging)")
     public void callRestaurantController() {
         //NOP
     }
 
     @Pointcut("execution(public * com.example.restaurant_voting.web.rest.MenuController.*(..)) " +
-            "&& !@annotation(com.example.restaurant_voting.config.NoLogging)")
+            "&& !@annotation(com.example.restaurant_voting.config.serializer.NoLogging)")
     public void callMenuController() {
         //NOP
     }
 
     @Pointcut("execution(public * com.example.restaurant_voting.web.rest.DishController.*(..))  " +
-            "&& !@annotation(com.example.restaurant_voting.config.NoLogging)")
+            "&& !@annotation(com.example.restaurant_voting.config.serializer.NoLogging)")
     public void callDishController() {
         //NOP
     }
 
     @Pointcut("execution(public * com.example.restaurant_voting.web.rest.VoteController.*(..))  " +
-            "&& !@annotation(com.example.restaurant_voting.config.NoLogging)")
+            "&& !@annotation(com.example.restaurant_voting.config.serializer.NoLogging)")
     public void callVoteController() {
         //NOP
     }

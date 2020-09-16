@@ -24,7 +24,7 @@ public interface VoteRepository extends JpaRepository<Vote, Integer> {
     int delete(@Param("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @Param("userId") int userId);
 
     @EntityGraph(value = "Vote.menu.restaurant")
-    @Query(value = "SELECT v FROM Vote v WHERE v.user.id=:userId", countQuery = "SELECT count(v) FROM Vote v")
+    @Query(value = "SELECT v FROM Vote v WHERE v.user.id=:userId", countQuery = "SELECT COUNT(v) FROM Vote v")
     Page<Vote> findAll(Pageable pageable, @Param("userId") int userId);
 
     @EntityGraph(value = "Vote.menu.restaurant")
@@ -36,11 +36,11 @@ public interface VoteRepository extends JpaRepository<Vote, Integer> {
                           @Param("userId") int userId);
 
     @Query(value = "SELECT new com.example.restaurant_voting.to.VoteTo(v.date, v.menu.id , v.menu.restaurant.id, v.menu.restaurant.name, v.menu.actionDate, COUNT(v.user.id))" +
-            " FROM Vote v  WHERE v.date=:date GROUP BY v.menu.id", countQuery = "SELECT count(v) FROM Vote v")
+            " FROM Vote v  WHERE v.date=:date GROUP BY v.menu.id", countQuery = "SELECT COUNT(v) FROM Vote v")
     Page<VoteTo> getStatisticByDate(@Param("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                                     Pageable pageable);
 
     @Query(value = "SELECT new com.example.restaurant_voting.to.VoteTo(v.date, v.menu.id , v.menu.restaurant.id, v.menu.restaurant.name, v.menu.actionDate, COUNT(v.user.id)) " +
-            "FROM Vote v  GROUP BY v.date, v.menu.id", countQuery = "SELECT count(v) FROM Vote v")
+            "FROM Vote v  GROUP BY v.date, v.menu.id", countQuery = "SELECT COUNT(v) FROM Vote v")
     Page<VoteTo> getStatisticAll(Pageable pageable);
 }

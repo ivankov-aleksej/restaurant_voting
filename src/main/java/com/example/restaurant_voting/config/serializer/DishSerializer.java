@@ -1,4 +1,4 @@
-package com.example.restaurant_voting.config;
+package com.example.restaurant_voting.config.serializer;
 
 import com.example.restaurant_voting.model.Dish;
 import com.fasterxml.jackson.core.JsonGenerator;

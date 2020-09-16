@@ -1,4 +1,4 @@
-package com.example.restaurant_voting.config;
+package com.example.restaurant_voting.config.serializer;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

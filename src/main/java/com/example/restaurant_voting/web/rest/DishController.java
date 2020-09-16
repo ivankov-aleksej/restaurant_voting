@@ -18,6 +18,7 @@ import java.util.Optional;
 
 import static com.example.restaurant_voting.util.EntityUtil.updateDish;
 import static com.example.restaurant_voting.util.ValidationUtil.checkExpiredDate;
+import static com.example.restaurant_voting.util.ValidationUtil.checkNotFoundCountWithId;
 
 @RestController
 @RequestMapping(value = DishController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -61,7 +62,7 @@ public class DishController {
         Optional<Dish> dishOptional = dishRepository.findByIdWithJoin(id);
         Dish dish = dishOptional.orElseThrow(() -> new NotFoundException("id=" + id));
         checkExpiredDate(dish.getMenu().getActionDate(), id);
-        dishRepository.deleteById(id);
+        checkNotFoundCountWithId(dishRepository.delete(id), id);
     }
 
     @PutMapping("/{id}")

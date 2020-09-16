@@ -28,13 +28,13 @@ class AccountControllerTest extends AbstractControllerTest {
     void delete() throws Exception {
         perform(MockMvcRequestBuilders.delete(REST_URL)
                 .with(userHttpBasic(USER2)))
-                .andExpect(status().isNoContent())
-                .andDo(print());
+                .andDo(print())
+                .andExpect(status().isNoContent());
 
         perform(MockMvcRequestBuilders.get(REST_URL)
                 .with(userHttpBasic(USER2)))
-                .andExpect(status().isUnauthorized())
-                .andDo(print());
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -52,8 +52,8 @@ class AccountControllerTest extends AbstractControllerTest {
         perform(MockMvcRequestBuilders.post(REST_URL + "register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(readFile(PACKAGE_JSON + "accountRegistrationNotValid.json")))
-                .andExpect(status().isUnprocessableEntity())
                 .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().json(readFile(PACKAGE_JSON + "accountExceptionNotValid.json"), true));
     }
 
@@ -62,8 +62,8 @@ class AccountControllerTest extends AbstractControllerTest {
         perform(MockMvcRequestBuilders.post(REST_URL + "register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(readFile(PACKAGE_JSON + "accountRegistrationDuplicateEmail.json")))
-                .andExpect(status().isConflict())
                 .andDo(print())
+                .andExpect(status().isConflict())
                 .andExpect(content().json(readFile(PACKAGE_JSON + "accountExceptionEmailAlreadyExisted.json"), true));
     }
 
@@ -73,7 +73,7 @@ class AccountControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(readFile(PACKAGE_JSON + "accountRegistration.json"))
                 .with(userHttpBasic(USER1)))
-                .andExpect(status().isNoContent())
-                .andDo(print());
+                .andDo(print())
+                .andExpect(status().isNoContent());
     }
 }

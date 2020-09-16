@@ -23,6 +23,7 @@ import java.util.Optional;
 
 import static com.example.restaurant_voting.AuthUser.authUserId;
 import static com.example.restaurant_voting.util.ValidationUtil.checkExpiredDate;
+import static com.example.restaurant_voting.util.ValidationUtil.checkNotFoundCountWithId;
 
 @RestController
 @RequestMapping(value = MenuController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -73,7 +74,7 @@ public class MenuController {
         Optional<Menu> menuOptional = menuRepository.findByIdWithJoin(id);
         Menu menu = menuOptional.orElseThrow(() -> new NotFoundException("id=" + id));
         checkExpiredDate(menu.getActionDate(), id);
-        menuRepository.deleteById(id);
+        checkNotFoundCountWithId(menuRepository.delete(id), id);
     }
 
     @PostMapping("/{id}/dishes")

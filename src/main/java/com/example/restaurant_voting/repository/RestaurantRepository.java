@@ -18,6 +18,6 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
     int delete(@Param("id") int id);
 
     @Query(value = "SELECT r FROM Restaurant r WHERE LOWER(r.name) LIKE CONCAT('%',LOWER(:name),'%')",
-            countQuery = "SELECT count(r) FROM Restaurant r")
+            countQuery = "SELECT COUNT(r) FROM Restaurant r")
     Page<Restaurant> findByNameIgnoreCase(@Param("name") String name, Pageable pageable);
 }

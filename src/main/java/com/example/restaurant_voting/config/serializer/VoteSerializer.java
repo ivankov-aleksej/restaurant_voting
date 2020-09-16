@@ -1,6 +1,6 @@
-package com.example.restaurant_voting.config;
+package com.example.restaurant_voting.config.serializer;
 
-import com.example.restaurant_voting.to.VoteTo;
+import com.example.restaurant_voting.model.Vote;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -11,11 +11,12 @@ import java.io.IOException;
 //https://stackoverflow.com/questions/51451891/how-to-hide-json-field-when-using-springdata-pageable
 
 @JsonComponent
-public class StatisticSerializer extends JsonSerializer<VoteTo> {
+public class VoteSerializer extends JsonSerializer<Vote> {
     @Override
-    public void serialize(VoteTo value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+    public void serialize(Vote value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         gen.writeStartObject();
 
+        gen.writeNumberField("id", value.id());
         gen.writeObjectField("date", value.getDate());
         gen.writeObjectField("restaurant", value.getMenu().getRestaurant());
 
@@ -25,7 +26,6 @@ public class StatisticSerializer extends JsonSerializer<VoteTo> {
         gen.writeObjectField("actionDate", value.getMenu().getActionDate());
 
         gen.writeEndObject();
-        gen.writeNumberField("count", value.getCount());
 
         gen.writeEndObject();
     }
