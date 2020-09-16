@@ -1,0 +1,8 @@
+{
+  "url": "/api/account/register",
+  "type": "UNIQUE_ERROR",
+  "typeMessage": "Unique error",
+  "details": [
+    "email already existed"
+  ]
+}

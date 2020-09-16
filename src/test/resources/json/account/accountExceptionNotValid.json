@@ -1,0 +1,8 @@
+{
+  "url": "/api/account/register",
+  "type": "VALIDATION_ERROR",
+  "typeMessage": "Validation error",
+  "details": [
+    "email must be a well-formed email address"
+  ]
+}

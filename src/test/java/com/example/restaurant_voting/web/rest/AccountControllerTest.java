@@ -21,7 +21,7 @@ class AccountControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(USER1)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(readFile(PACKAGE_JSON + "account_user_1.json")));
+                .andExpect(content().json(readFile(PACKAGE_JSON + "accountUser.json")));
     }
 
     @Test
@@ -41,17 +41,37 @@ class AccountControllerTest extends AbstractControllerTest {
     void register() throws Exception {
         perform(MockMvcRequestBuilders.post(REST_URL + "register")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(readFile(PACKAGE_JSON + "account_registration.json")))
+                .content(readFile(PACKAGE_JSON + "accountRegistration.json")))
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(content().json(readFile(PACKAGE_JSON + "account_new_registered.json")));
+                .andExpect(content().json(readFile(PACKAGE_JSON + "accountNewRegistered.json")));
+    }
+
+    @Test
+    void registerNotValid() throws Exception {
+        perform(MockMvcRequestBuilders.post(REST_URL + "register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(readFile(PACKAGE_JSON + "accountRegistrationNotValid.json")))
+                .andExpect(status().isUnprocessableEntity())
+                .andDo(print())
+                .andExpect(content().json(readFile(PACKAGE_JSON + "accountExceptionNotValid.json"), true));
+    }
+
+    @Test
+    void registerDuplicate() throws Exception {
+        perform(MockMvcRequestBuilders.post(REST_URL + "register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(readFile(PACKAGE_JSON + "accountRegistrationDuplicateEmail.json")))
+                .andExpect(status().isConflict())
+                .andDo(print())
+                .andExpect(content().json(readFile(PACKAGE_JSON + "accountExceptionEmailAlreadyExisted.json"), true));
     }
 
     @Test
     void update() throws Exception {
         perform(MockMvcRequestBuilders.put(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(readFile(PACKAGE_JSON + "account_registration.json"))
+                .content(readFile(PACKAGE_JSON + "accountRegistration.json"))
                 .with(userHttpBasic(USER1)))
                 .andExpect(status().isNoContent())
                 .andDo(print());
