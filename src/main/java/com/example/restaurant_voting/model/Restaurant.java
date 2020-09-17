@@ -9,14 +9,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Restaurant extends BaseEntity implements Serializable {
+public class Restaurant extends BaseEntity {
 
     @Column(nullable = false, unique = true)
     @NotEmpty

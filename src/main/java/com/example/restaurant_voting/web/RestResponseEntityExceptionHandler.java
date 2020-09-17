@@ -33,7 +33,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
             "(restaurant_id, created_on)", "menu already existed",
             "(date, user_id)", "vote already existed",
             "(email)", "email already existed",
-            "(restaurant_id, action_date)", "menu already existed");
+            "(restaurant_id, action_date)", "menu already existed",
+            "(name)", "restaurant already existed");
 
 
     //422

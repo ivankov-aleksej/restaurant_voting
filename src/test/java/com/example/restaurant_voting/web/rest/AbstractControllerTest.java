@@ -34,9 +34,9 @@ abstract class AbstractControllerTest {
     private static final CharacterEncodingFilter CHARACTER_ENCODING_FILTER = new CharacterEncodingFilter();
     final static Integer NOT_FOUND_ID = 1000;
 
-    protected final static LocalDate TOMORROW_DATE = LocalDate.parse("2020-08-03");
-    protected final static LocalDate CURRENT_DATE = LocalDate.parse("2020-08-02");
-    protected final static LocalDate YESTERDAY_DATE = LocalDate.parse("2020-08-01");
+    final static LocalDate TOMORROW_DATE = LocalDate.parse("2020-08-03");
+    final static LocalDate CURRENT_DATE = LocalDate.parse("2020-08-02");
+    final static LocalDate YESTERDAY_DATE = LocalDate.parse("2020-08-01");
 
     static {
         CHARACTER_ENCODING_FILTER.setEncoding("UTF-8");
@@ -67,13 +67,13 @@ abstract class AbstractControllerTest {
     //    https://stackoverflow.com/questions/52830441/junit5-mock-a-static-method
     //    https://javadoc.io/static/org.mockito/mockito-core/3.4.6/org/mockito/Mockito.html#static_mocks
     @SuppressWarnings("unchecked")
-    protected static void mockedDateUtil(MockedStatic mocked, @NotNull LocalDate current) {
+    static void mockedDateUtil(MockedStatic mocked, @NotNull LocalDate current) {
         mocked.when(DateUtil::getDate).thenReturn(current);
         assertEquals(current, DateUtil.getDate());
     }
 
     @SuppressWarnings("unchecked")
-    protected static void mockedDateUtil(MockedStatic mocked, @NotNull LocalDate current, @NotNull LocalDate tomorrow) {
+    static void mockedDateUtil(MockedStatic mocked, @NotNull LocalDate current, @NotNull LocalDate tomorrow) {
         mocked.when(DateUtil::getDate).thenReturn(current);
         mocked.when(DateUtil::getTomorrow).thenReturn(tomorrow);
         assertEquals(current, DateUtil.getDate());
@@ -81,7 +81,7 @@ abstract class AbstractControllerTest {
     }
 
     @SuppressWarnings("unchecked")
-    protected static void mockedDateUtil(MockedStatic mocked, @NotNull LocalDate current, @NotNull LocalTime time) {
+    static void mockedDateUtil(MockedStatic mocked, @NotNull LocalDate current, @NotNull LocalTime time) {
         mocked.when(DateUtil::getDate).thenReturn(current);
         mocked.when(DateUtil::getTime).thenReturn(time);
         assertEquals(current, DateUtil.getDate());
@@ -89,7 +89,7 @@ abstract class AbstractControllerTest {
     }
 
     @SuppressWarnings("unchecked")
-    protected static void mockedDateUtil(MockedStatic mocked, @NotNull LocalDate current, @NotNull LocalDate tomorrow, @NotNull LocalTime time) {
+    static void mockedDateUtil(MockedStatic mocked, @NotNull LocalDate current, @NotNull LocalDate tomorrow, @NotNull LocalTime time) {
         mocked.when(DateUtil::getDate).thenReturn(current);
         mocked.when(DateUtil::getTomorrow).thenReturn(tomorrow);
         mocked.when(DateUtil::getTime).thenReturn(time);

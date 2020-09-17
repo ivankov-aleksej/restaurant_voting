@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Getter
@@ -20,7 +19,7 @@ import java.math.BigDecimal;
         @NamedEntityGraph(name = "Dish.menu", attributeNodes = @NamedAttributeNode("menu"))
 })
 //@JsonSerialize(using = DishSerializer.class)
-public class Dish extends BaseEntity implements Serializable {
+public class Dish extends BaseEntity {
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id", foreignKey = @ForeignKey(name = "fk_dish_menu_id"))

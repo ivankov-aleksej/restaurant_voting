@@ -11,7 +11,6 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +27,7 @@ import java.util.List;
 })
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"restaurant_id", "action_date"},
         name = "restaurant_id_action_date_unique")})
-public class Menu extends BaseEntity implements Serializable {
+public class Menu extends BaseEntity {
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", foreignKey = @ForeignKey(name = "fk_menu_restaurant_id"))

@@ -14,7 +14,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.EnumSet;
 import java.util.Set;
@@ -25,7 +24,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Table(name = "users")
 @Entity
-public class User extends BaseEntity implements Serializable {
+public class User extends BaseEntity {
 
     @Column(name = "email", nullable = false, unique = true)
     @Email
