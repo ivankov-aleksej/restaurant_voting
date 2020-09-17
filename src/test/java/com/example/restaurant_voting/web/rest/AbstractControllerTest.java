@@ -2,12 +2,16 @@ package com.example.restaurant_voting.web.rest;
 
 import com.example.restaurant_voting.util.DateUtil;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockedStatic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -25,8 +29,12 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
+@ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
 @ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -46,7 +54,7 @@ abstract class AbstractControllerTest {
     }
 
     @Autowired
-    protected MockMvc mockMvc;
+    MockMvc mockMvc;
 
     static String readFile(String fileName) throws IOException {
         File file = ResourceUtils.getFile("classpath:json/" + fileName);
@@ -54,10 +62,13 @@ abstract class AbstractControllerTest {
     }
 
     @BeforeEach
-    public void setUp(WebApplicationContext webApplicationContext) {
+    void setUp(WebApplicationContext webApplicationContext,
+               RestDocumentationContextProvider restDocumentation) {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(webApplicationContext)
                 .addFilter(CHARACTER_ENCODING_FILTER)
+                .apply(documentationConfiguration(restDocumentation))
+                .alwaysDo(document("{class-name}/{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())))
                 .apply(springSecurity())
                 .build();
     }

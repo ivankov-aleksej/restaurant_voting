@@ -1,0 +1,154 @@
+=== Vote
+
+NOTE: For Update used POST method
+
+NOTE: All POST request is allowed for users with Admin and User roles.
+
+==== Create
+
+===== Curl
+
+include::{snippets}/vote-controller-test/create/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/vote-controller-test/create/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/vote-controller-test/create/http-response.adoc[]
+
+==== Create After Expired Date
+
+===== Curl
+
+include::{snippets}/vote-controller-test/create-after-expired-time/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/vote-controller-test/create-after-expired-time/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/vote-controller-test/create-after-expired-time/http-response.adoc[]
+
+==== Create if Menu Not Current Date
+
+===== Curl
+
+include::{snippets}/vote-controller-test/create-menu-not-current-date/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/vote-controller-test/create-menu-not-current-date/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/vote-controller-test/create-menu-not-current-date/http-response.adoc[]
+
+NOTE: All Get request is allowed for users with Admin and User roles.
+
+==== Get Current
+
+===== Curl
+
+include::{snippets}/vote-controller-test/get-current/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/vote-controller-test/get-current/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/vote-controller-test/get-current/http-response.adoc[]
+
+==== Get by Date
+
+===== Curl
+
+include::{snippets}/vote-controller-test/get-by-date/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/vote-controller-test/get-by-date/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/vote-controller-test/get-by-date/http-response.adoc[]
+
+==== Get All
+
+===== Curl
+
+include::{snippets}/vote-controller-test/get-all/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/vote-controller-test/get-all/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/vote-controller-test/get-all/http-response.adoc[]
+
+NOTE: All DELETE request is allowed for users with Admin and User roles.
+
+==== Delete
+
+===== Curl
+
+include::{snippets}/vote-controller-test/delete/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/vote-controller-test/delete/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/vote-controller-test/delete/http-response.adoc[]
+
+==== Delete Not Found with Current Date
+
+===== Curl
+
+include::{snippets}/vote-controller-test/delete-not-found-current-date/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/vote-controller-test/delete-not-found-current-date/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/vote-controller-test/delete-not-found-current-date/http-response.adoc[]
+
+==== Delete After Expired Date
+
+===== Curl
+
+include::{snippets}/vote-controller-test/delete-after-expired-time/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/vote-controller-test/delete-after-expired-time/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/vote-controller-test/delete-after-expired-time/http-response.adoc[]
+

@@ -1,0 +1,186 @@
+=== Menu
+
+NOTE: All POST request is allowed for only users with Admin role.
+
+==== Create
+
+===== Curl
+
+include::{snippets}/menu-controller-test/create/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/menu-controller-test/create/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/menu-controller-test/create/http-response.adoc[]
+
+==== Create else Not Found Restaurant
+
+===== Curl
+
+include::{snippets}/menu-controller-test/create-with-not-found-restaurant/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/menu-controller-test/create-with-not-found-restaurant/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/menu-controller-test/create-with-not-found-restaurant/http-response.adoc[]
+
+==== Create Already Existed
+
+===== Curl
+
+include::{snippets}/menu-controller-test/create-already-existed/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/menu-controller-test/create-already-existed/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/menu-controller-test/create-already-existed/http-response.adoc[]
+
+==== Create Forbidden
+
+===== Curl
+
+include::{snippets}/menu-controller-test/create-forbidden/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/menu-controller-test/create-forbidden/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/menu-controller-test/create-forbidden/http-response.adoc[]
+
+NOTE: All Get request is allowed for users with Admin and User roles.
+
+==== Get by Id
+
+===== Curl
+
+include::{snippets}/menu-controller-test/get-by-id/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/menu-controller-test/get-by-id/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/menu-controller-test/get-by-id/http-response.adoc[]
+
+==== Get by Date
+
+===== Curl
+
+include::{snippets}/menu-controller-test/get-by-date/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/menu-controller-test/get-by-date/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/menu-controller-test/get-by-date/http-response.adoc[]
+
+==== Get All
+
+===== Curl
+
+include::{snippets}/menu-controller-test/get-all/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/menu-controller-test/get-all/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/menu-controller-test/get-all/http-response.adoc[]
+
+==== Get by Id Not Found
+
+===== Curl
+
+include::{snippets}/menu-controller-test/get-by-id-not-found/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/menu-controller-test/get-by-id-not-found/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/menu-controller-test/get-by-id-not-found/http-response.adoc[]
+
+NOTE: All DELETE request is allowed for only users with Admin role.
+
+==== Delete
+
+===== Curl
+
+include::{snippets}/menu-controller-test/delete/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/menu-controller-test/delete/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/menu-controller-test/delete/http-response.adoc[]
+
+==== Delete else Date is not Tomorrow
+
+===== Curl
+
+include::{snippets}/menu-controller-test/delete-not-tomorrow-date-menu/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/menu-controller-test/delete-not-tomorrow-date-menu/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/menu-controller-test/delete-not-tomorrow-date-menu/http-response.adoc[]
+
+==== Delete Forbidden
+
+Users with User role.
+
+===== Curl
+
+include::{snippets}/menu-controller-test/delete-forbidden/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/menu-controller-test/delete-forbidden/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/menu-controller-test/delete-forbidden/http-response.adoc[]
+

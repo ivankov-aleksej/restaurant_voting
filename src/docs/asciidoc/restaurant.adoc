@@ -1,0 +1,252 @@
+=== Restaurant
+
+NOTE: All POST request is allowed for only users with Admin role.
+
+==== Create
+
+===== Curl
+
+include::{snippets}/restaurant-controller-test/create/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/restaurant-controller-test/create/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/restaurant-controller-test/create/http-response.adoc[]
+
+==== Create Not Valid Id
+
+===== Curl
+
+include::{snippets}/restaurant-controller-test/create-not-valid-id/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/restaurant-controller-test/create-not-valid-id/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/restaurant-controller-test/create-not-valid-id/http-response.adoc[]
+
+==== Create Not Valid Name
+
+===== Curl
+
+include::{snippets}/restaurant-controller-test/create-not-valid-name/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/restaurant-controller-test/create-not-valid-name/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/restaurant-controller-test/create-not-valid-name/http-response.adoc[]
+
+==== Create With Bad Syntax
+
+===== Curl
+
+include::{snippets}/restaurant-controller-test/create-bad-syntax/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/restaurant-controller-test/create-bad-syntax/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/restaurant-controller-test/create-bad-syntax/http-response.adoc[]
+
+NOTE: All Get request is allowed for users with Admin and User roles.
+
+==== Get by Id
+
+===== Curl
+
+include::{snippets}/restaurant-controller-test/get-by-id/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/restaurant-controller-test/get-by-id/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/restaurant-controller-test/get-by-id/http-response.adoc[]
+
+==== Get by Name
+
+===== Curl
+
+include::{snippets}/restaurant-controller-test/get-by-name/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/restaurant-controller-test/get-by-name/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/restaurant-controller-test/get-by-name/http-response.adoc[]
+
+==== Get All
+
+===== Curl
+
+include::{snippets}/restaurant-controller-test/get-all/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/restaurant-controller-test/get-all/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/restaurant-controller-test/get-all/http-response.adoc[]
+
+==== Get by Id Not Found
+
+===== Curl
+
+include::{snippets}/restaurant-controller-test/get-by-id-not-found/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/restaurant-controller-test/get-by-id-not-found/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/restaurant-controller-test/get-by-id-not-found/http-response.adoc[]
+
+NOTE: All PUT request is allowed for only users with Admin role.
+
+==== Update
+
+===== Curl
+
+include::{snippets}/restaurant-controller-test/update/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/restaurant-controller-test/update/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/restaurant-controller-test/update/http-response.adoc[]
+
+==== Update with Id Not Found
+
+===== Curl
+
+include::{snippets}/restaurant-controller-test/update-not-found/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/restaurant-controller-test/update-not-found/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/restaurant-controller-test/update-not-found/http-response.adoc[]
+
+==== Update not Valid Id
+
+===== Curl
+
+include::{snippets}/restaurant-controller-test/update-not-valid-id/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/restaurant-controller-test/update-not-valid-id/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/restaurant-controller-test/update-not-valid-id/http-response.adoc[]
+
+==== Update not Valid Name
+
+===== Curl
+
+include::{snippets}/restaurant-controller-test/update-not-valid-name/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/restaurant-controller-test/update-not-valid-name/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/restaurant-controller-test/update-not-valid-name/http-response.adoc[]
+
+NOTE: All DELETE request is allowed for only users with Admin role.
+
+==== Delete
+
+===== Curl
+
+include::{snippets}/restaurant-controller-test/delete/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/restaurant-controller-test/delete/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/restaurant-controller-test/delete/http-response.adoc[]
+
+==== Delete Not Found
+
+===== Curl
+
+include::{snippets}/restaurant-controller-test/delete-not-found/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/restaurant-controller-test/delete-not-found/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/restaurant-controller-test/delete-not-found/http-response.adoc[]
+
+==== Delete Forbidden
+
+Users with User role.
+
+===== Curl
+
+include::{snippets}/restaurant-controller-test/delete-forbidden/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/restaurant-controller-test/delete-forbidden/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/restaurant-controller-test/delete-forbidden/http-response.adoc[]
+

@@ -1,0 +1,220 @@
+=== Dish
+
+NOTE: All POST request is allowed for only users with Admin role.
+
+==== Create if Date Menu of Tomorrow
+
+===== Curl
+
+include::{snippets}/dish-controller-test/create-with-tomorrow-date-menu/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/dish-controller-test/create-with-tomorrow-date-menu/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/dish-controller-test/create-with-tomorrow-date-menu/http-response.adoc[]
+
+==== Create if Date Menu of Not Tomorrow
+
+===== Curl
+
+include::{snippets}/dish-controller-test/create-with-not-tomorrow-date-menu/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/dish-controller-test/create-with-not-tomorrow-date-menu/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/dish-controller-test/create-with-not-tomorrow-date-menu/http-response.adoc[]
+
+==== Create if Menu Not Found
+
+===== Curl
+
+include::{snippets}/dish-controller-test/create-with-not-found-menu/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/dish-controller-test/create-with-not-found-menu/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/dish-controller-test/create-with-not-found-menu/http-response.adoc[]
+
+NOTE: All Get request is allowed for users with Admin and User roles.
+
+==== Get by Id
+
+===== Curl
+
+include::{snippets}/dish-controller-test/get-by-id/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/dish-controller-test/get-by-id/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/dish-controller-test/get-by-id/http-response.adoc[]
+
+==== Get by Date
+
+===== Curl
+
+include::{snippets}/dish-controller-test/get-by-date/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/dish-controller-test/get-by-date/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/dish-controller-test/get-by-date/http-response.adoc[]
+
+==== Get by Name
+
+===== Curl
+
+include::{snippets}/dish-controller-test/get-by-name/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/dish-controller-test/get-by-name/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/dish-controller-test/get-by-name/http-response.adoc[]
+
+==== Get All
+
+===== Curl
+
+include::{snippets}/dish-controller-test/get-all/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/dish-controller-test/get-all/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/dish-controller-test/get-all/http-response.adoc[]
+
+==== Get by Id Not Found
+
+===== Curl
+
+include::{snippets}/dish-controller-test/get-by-id-not-found/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/dish-controller-test/get-by-id-not-found/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/dish-controller-test/get-by-id-not-found/http-response.adoc[]
+
+NOTE: All PUT request is allowed for only users with Admin role.
+
+==== Update if Date Menu of Tomorrow
+
+===== Curl
+
+include::{snippets}/dish-controller-test/update-with-tomorrow-date-menu/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/dish-controller-test/update-with-tomorrow-date-menu/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/dish-controller-test/update-with-tomorrow-date-menu/http-response.adoc[]
+
+==== Update if Date Menu of Not Tomorrow
+
+===== Curl
+
+include::{snippets}/dish-controller-test/update-with-not-next-date-menu/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/dish-controller-test/update-with-not-next-date-menu/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/dish-controller-test/update-with-not-next-date-menu/http-response.adoc[]
+
+NOTE: All DELETE request is allowed for only users with Admin role.
+
+==== Delete if Date Menu of Tomorrow
+
+===== Curl
+
+include::{snippets}/dish-controller-test/delete-with-tomorrow-date-menu/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/dish-controller-test/delete-with-tomorrow-date-menu/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/dish-controller-test/delete-with-tomorrow-date-menu/http-response.adoc[]
+
+==== Delete if Date Menu of Not Tomorrow
+
+===== Curl
+
+include::{snippets}/dish-controller-test/delete-with-not-tomorrow-date-menu/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/dish-controller-test/delete-with-not-tomorrow-date-menu/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/dish-controller-test/delete-with-not-tomorrow-date-menu/http-response.adoc[]
+
+==== Delete Forbidden
+
+Users with User role.
+
+===== Curl
+
+include::{snippets}/dish-controller-test/delete-with-tomorrow-date-menu-forbidden/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/dish-controller-test/delete-with-tomorrow-date-menu-forbidden/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/dish-controller-test/delete-with-tomorrow-date-menu-forbidden/http-response.adoc[]
+

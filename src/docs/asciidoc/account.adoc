@@ -1,0 +1,105 @@
+=== Account
+
+==== Register
+
+NOTE: For user not authenticated
+
+===== Curl
+
+include::{snippets}/account-controller-test/register/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/account-controller-test/register/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/account-controller-test/register/http-response.adoc[]
+
+==== Register with Not Valid Entity
+
+===== Curl
+
+include::{snippets}/account-controller-test/register-not-valid/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/account-controller-test/register-not-valid/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/account-controller-test/register-not-valid/http-response.adoc[]
+
+==== Register With Duplicate Email
+
+===== Curl
+
+include::{snippets}/account-controller-test/register-duplicate/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/account-controller-test/register-duplicate/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/account-controller-test/register-duplicate/http-response.adoc[]
+
+==== Get Current Authentication User
+
+===== Curl
+
+include::{snippets}/account-controller-test/get/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/account-controller-test/get/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/account-controller-test/get/http-response.adoc[]
+
+==== Update
+
+NOTE: Only current user
+
+===== Curl
+
+include::{snippets}/account-controller-test/update/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/account-controller-test/update/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/account-controller-test/update/http-response.adoc[]
+
+==== Delete
+
+NOTE: Only current user
+
+===== Curl
+
+include::{snippets}/account-controller-test/delete/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/account-controller-test/delete/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/account-controller-test/delete/http-response.adoc[]
+
+

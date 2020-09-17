@@ -1,0 +1,51 @@
+=== Statistic
+
+NOTE: All Get request is allowed for users with Admin and User roles.
+
+==== Get Current
+
+===== Curl
+
+include::{snippets}/statistic-controller-test/get-current/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/statistic-controller-test/get-current/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/statistic-controller-test/get-current/http-response.adoc[]
+
+==== Get by Date
+
+===== Curl
+
+include::{snippets}/statistic-controller-test/get-by-date/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/statistic-controller-test/get-by-date/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/statistic-controller-test/get-by-date/http-response.adoc[]
+
+==== Get All
+
+===== Curl
+
+include::{snippets}/statistic-controller-test/get-all/curl-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/statistic-controller-test/get-all/http-request.adoc[]
+
+===== HTTP Response
+
+====== Success HTTP responses
+
+include::{snippets}/statistic-controller-test/get-all/http-response.adoc[]

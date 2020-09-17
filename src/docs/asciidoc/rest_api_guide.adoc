@@ -1,0 +1,11 @@
+== REST Notes API Guide
+
+Voting for Restaurant; :doctype: book :icons: font :source-highlighter: highlightjs :toc: left :toclevels: 4 :sectlinks:
+
+include::rest_conv.adoc[]
+include::restaurant.adoc[]
+include::menu.adoc[]
+include::dish.adoc[]
+include::account.adoc[]
+include::vote.adoc[]
+include::statistic.adoc[]
