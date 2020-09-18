@@ -32,10 +32,16 @@ P.S.: Make sure everything works with latest version that is on github :)
 
 P.P.S.: Assume that your API will be used by a frontend developer to build frontend on top of that.
 
+[![codecov](https://codecov.io/gh/ivankov-aleksej/restaurant_voting/branch/master/graph/badge.svg)](https://codecov.io/gh/ivankov-aleksej/restaurant_voting)
+
+[![Build Status](https://travis-ci.org/ivankov-aleksej/restaurant_voting.svg?branch=master)](https://travis-ci.org/ivankov-aleksej/restaurant_voting)
+
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/63e3d884ea934d30bf4d9a8ccf11759a)](https://www.codacy.com/manual/ivankov-aleksej/restaurant_voting?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ivankov-aleksej/restaurant_voting&amp;utm_campaign=Badge_Grade)
+
 ## SQL
 
 ![alt text](https://github.com/ivankov-aleksej/easy_voting/blob/master/db.png?raw=true)
 
 ## Rest API Guide
 
-[link to rest_api_guide](https://github.com/ivankov-aleksej/restaurant_voting/blob/master/rest_api_guide.pdf)
+[Rest_api_guide pdf](https://github.com/ivankov-aleksej/restaurant_voting/blob/master/rest_api_guide.pdf)
