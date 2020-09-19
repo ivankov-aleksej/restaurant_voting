@@ -66,7 +66,6 @@ public interface DishRepository extends JpaRepository<Dish, Integer> {
             }
     )
     @Transactional
-    @Modifying
     @Override
     <S extends Dish> S save(S entity);
 

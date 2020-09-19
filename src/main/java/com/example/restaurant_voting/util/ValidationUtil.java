@@ -80,9 +80,10 @@ public class ValidationUtil {
     public static Throwable logAndGetRootCause(Logger log, WebRequest req, Exception e, boolean logException, ErrorType errorType) {
         Throwable rootCause = ValidationUtil.getRootCause(e);
         if (logException) {
-            log.error("{} at request {}: {}", errorType, req.getContextPath(), rootCause);
+            log.error("{} at request {}: {}", errorType, req.getContextPath(), rootCause.toString());
         } else {
-            log.warn("{} at request  {}: {}", errorType, req.getContextPath(), rootCause);
+            log.warn("{} at request  {}: {}", errorType, req.getContextPath(), rootCause.toString()
+            );
         }
         return rootCause;
     }

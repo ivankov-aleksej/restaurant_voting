@@ -36,7 +36,7 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
     int delete(@Param("id") int id);
 
     @Cacheable(value = "menusDatePage", key = "{#date, #pageable.pageNumber, #pageable.pageSize, #pageable.sort}")
-    @EntityGraph(value = "Menu.restaurant.dishes")
+    @EntityGraph(value = "Menu.restaurant", type = EntityGraph.EntityGraphType.LOAD )
     @Query(value = "SELECT m FROM Menu m WHERE m.actionDate=:date", countQuery = "SELECT COUNT(m) FROM Menu m")
     Page<Menu> findByDateWithJoin(@Param("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, Pageable pageable);
 
@@ -53,7 +53,7 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
     //    https://stackoverflow.com/questions/26901010/spring-data-jpa-eager-fetch-with-join-and-using-pagination-not-working
 
     @Cacheable(value = "menusPage", key = "{#pageable.pageNumber, #pageable.pageSize, #pageable.sort}")
-    @EntityGraph(value = "Menu.restaurant.dishes")
+    @EntityGraph(value = "Menu.restaurant", type = EntityGraph.EntityGraphType.LOAD )
     @Query(value = "SELECT m FROM Menu m ", countQuery = "SELECT COUNT(m) FROM Menu m")
     Page<Menu> findAllWithJoin(Pageable pageable);
 
@@ -66,7 +66,10 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
             }
     )
     @Transactional
-    @Modifying
     @Override
     <S extends Menu> S save(S entity);
+
+    @EntityGraph(value = "Menu", type = EntityGraph.EntityGraphType.FETCH)
+    @Override
+    Optional<Menu> findById(Integer id);
 }

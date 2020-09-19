@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -30,5 +31,12 @@ class RestaurantRepositoryIntegrationTest {
         Page<Restaurant> restaurants = restaurantRepository.findByNameIgnoreCase("kiNG", PageRequest.of(0, 20));
         assertEquals(1, restaurants.getContent().size());
         assertEquals(restaurants.getContent().get(0).getName(), "Burger King");
+    }
+
+    @Test
+    void findAll() {
+        Page<Restaurant> restaurants = restaurantRepository
+                .findAll(PageRequest.of(0, 20, Sort.by("name").descending()));
+        assertEquals(2, restaurants.getContent().size());
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -25,19 +26,23 @@ class MenuRepositoryIntegrationTest {
     void findByName() {
         Page<Menu> menus = menuRepository.findByDateWithJoin(DATE, PageRequest.of(0, 20));
         assertEquals(2, menus.getContent().size());
-        menus.getContent().forEach(menu -> assertEquals(DATE, menu.getActionDate()));
     }
 
     @Test
     void findByIdWithJoin() {
         Optional<Menu> menuOptional = menuRepository.findByIdWithJoin(MENU_ID);
         assertTrue(menuOptional.isPresent());
-        assertEquals(2, menuOptional.get().getDishes().size());
+    }
+
+    @Test
+    void findById() {
+        Optional<Menu> menuOptional = menuRepository.findById(MENU_ID);
+        assertTrue(menuOptional.isPresent());
     }
 
     @Test
     void findAllWithJoin() {
-        Page<Menu> menus = menuRepository.findAllWithJoin(PageRequest.of(0, 20));
+        Page<Menu> menus = menuRepository.findAllWithJoin(PageRequest.of(0, 20, Sort.by("actionDate", "restaurant.name").descending()));
         assertEquals(4, menus.getContent().size());
     }
 }

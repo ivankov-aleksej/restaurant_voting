@@ -53,7 +53,6 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
             }
     )
     @Transactional
-    @Modifying
     @Override
     <S extends Restaurant> S save(S entity);
 }

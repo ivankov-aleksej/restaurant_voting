@@ -64,6 +64,6 @@ public class LoggingConfig {
         String args = Arrays.stream(jp.getArgs())
                 .map(Object::toString)
                 .collect(Collectors.joining(","));
-        logger.info("{}, args=[{}}]", jp, args);
+        logger.info("{}, args=[{}]", jp, args);
     }
 }

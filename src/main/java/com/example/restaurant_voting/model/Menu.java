@@ -21,6 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @NamedEntityGraphs(value = {
+        @NamedEntityGraph(name = "Menu"),
         @NamedEntityGraph(name = "Menu.restaurant.dishes",
                 attributeNodes = {@NamedAttributeNode("restaurant"), @NamedAttributeNode("dishes")}),
         @NamedEntityGraph(name = "Menu.restaurant", attributeNodes = {@NamedAttributeNode("restaurant")})
@@ -43,7 +44,7 @@ public class Menu extends BaseEntity {
     //    https://discourse.hibernate.org/t/hibernate-lazy-mode-doesnt-work-with-spring-boot/1535/6
     //    spring.jpa.open-in-view=false
     //    You need to use a JPQL query with JOIN FETCH the lazy associations.
-    @OneToMany(mappedBy = "menu")
+    @OneToMany(mappedBy = "menu", fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Dish> dishes = new ArrayList<>();
 

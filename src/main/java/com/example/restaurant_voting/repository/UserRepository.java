@@ -25,7 +25,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @CacheEvict(value = "users", allEntries = true)
     @Transactional
-    @Modifying
     @Override
     <S extends User> S save(S entity);
 }
