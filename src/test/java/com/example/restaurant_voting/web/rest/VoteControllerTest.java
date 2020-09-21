@@ -2,6 +2,9 @@ package com.example.restaurant_voting.web.rest;
 
 import com.example.restaurant_voting.service.VoteService;
 import com.example.restaurant_voting.util.DateUtil;
+import com.example.restaurant_voting.util.exception.DateException;
+import com.example.restaurant_voting.util.exception.NotFoundException;
+import com.example.restaurant_voting.util.exception.TimeException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -14,6 +17,7 @@ import java.time.LocalTime;
 import static com.example.restaurant_voting.TestUtil.userHttpBasic;
 import static com.example.restaurant_voting.UserTestData.USER1;
 import static com.example.restaurant_voting.UserTestData.USER2;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mockStatic;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -77,6 +81,8 @@ class VoteControllerTest extends AbstractControllerTest {
                     .andExpect(status().isUnprocessableEntity())
                     .andDo(print())
                     .andExpect(content().json(readFile(PACKAGE_JSON + "voteExceptionExpiredTime.json"), true));
+
+            assertThrows(TimeException.class, () -> voteService.save(MENU_ID, USER1.id()));
         }
     }
 
@@ -90,6 +96,8 @@ class VoteControllerTest extends AbstractControllerTest {
                     .andExpect(status().isUnprocessableEntity())
                     .andDo(print())
                     .andExpect(content().json(readFile(PACKAGE_JSON + "voteExceptionMenuNotCurrentDate.json"), true));
+
+            assertThrows(DateException.class, () -> voteService.save(YESTERDAY_MENU_ID, USER1.id()));
         }
     }
 
@@ -115,6 +123,8 @@ class VoteControllerTest extends AbstractControllerTest {
                     .andExpect(status().isUnprocessableEntity())
                     .andDo(print())
                     .andExpect(content().json(readFile(PACKAGE_JSON + "voteExceptionDeleteExpiredTime.json"), true));
+
+            assertThrows(TimeException.class, () -> voteService.delete(USER1.id()));
         }
     }
 
@@ -128,6 +138,8 @@ class VoteControllerTest extends AbstractControllerTest {
                     .andExpect(status().isUnprocessableEntity())
                     .andDo(print())
                     .andExpect(content().json(readFile(PACKAGE_JSON + "voteExceptionNotFoundWithCurrentDate.json"), true));
+
+            assertThrows(NotFoundException.class, () -> voteService.delete(USER1.id()));
         }
     }
 

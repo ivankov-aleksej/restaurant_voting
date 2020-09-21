@@ -30,7 +30,7 @@ class DishControllerTest extends AbstractControllerTest {
      */
 
     @Autowired
-    DishController controller;
+    private DishController controller;
 
     @Test
     void getAll() throws Exception {

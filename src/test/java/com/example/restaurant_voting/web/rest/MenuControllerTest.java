@@ -30,7 +30,7 @@ class MenuControllerTest extends AbstractControllerTest {
 
 
     @Autowired
-    MenuController controller;
+    private MenuController controller;
 
     @Test
     void getAll() throws Exception {

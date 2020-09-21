@@ -21,7 +21,7 @@ class RestaurantControllerTest extends AbstractControllerTest {
     private static final String PACKAGE_JSON = "restaurant/";
 
     @Autowired
-    RestaurantController controller;
+    private RestaurantController controller;
 
     @Test
     void getAll() throws Exception {
