@@ -1,12 +1,15 @@
 package com.example.restaurant_voting.web.rest;
 
 
+import com.example.restaurant_voting.util.exception.NotFoundException;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static com.example.restaurant_voting.TestUtil.userHttpBasic;
 import static com.example.restaurant_voting.UserTestData.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -16,6 +19,9 @@ class RestaurantControllerTest extends AbstractControllerTest {
     private static final String REST_URL = RestaurantController.REST_URL + '/';
     private static final String REST_NAME = REST_URL + "byName?name=kiNG";
     private static final String PACKAGE_JSON = "restaurant/";
+
+    @Autowired
+    RestaurantController controller;
 
     @Test
     void getAll() throws Exception {
@@ -59,6 +65,8 @@ class RestaurantControllerTest extends AbstractControllerTest {
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(readFile(PACKAGE_JSON + "restaurantExceptionNotFound.json"), true));
+
+        assertThrows(NotFoundException.class, () -> controller.getById(NOT_FOUND_ID));
     }
 
     @Test
@@ -131,6 +139,8 @@ class RestaurantControllerTest extends AbstractControllerTest {
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(content().json(readFile(PACKAGE_JSON + "restaurantExceptionNotFound.json"), true));
+
+        assertThrows(NotFoundException.class, () -> controller.delete(NOT_FOUND_ID));
     }
 
     @Test
@@ -191,6 +201,8 @@ class RestaurantControllerTest extends AbstractControllerTest {
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(readFile(PACKAGE_JSON + "restaurantExceptionUpdateNotFound.json"), true));
+
+        assertThrows(NotFoundException.class, () -> controller.getById(NOT_FOUND_ID));
     }
 
     @Test

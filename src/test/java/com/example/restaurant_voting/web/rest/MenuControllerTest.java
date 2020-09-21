@@ -1,8 +1,11 @@
 package com.example.restaurant_voting.web.rest;
 
 import com.example.restaurant_voting.util.DateUtil;
+import com.example.restaurant_voting.util.exception.DateException;
+import com.example.restaurant_voting.util.exception.NotFoundException;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -10,6 +13,7 @@ import static com.example.restaurant_voting.TestUtil.userHttpBasic;
 import static com.example.restaurant_voting.UserTestData.ADMIN;
 import static com.example.restaurant_voting.UserTestData.USER1;
 import static com.example.restaurant_voting.web.rest.RestaurantControllerTest.RESTAURANT_ID;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mockStatic;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -23,6 +27,10 @@ class MenuControllerTest extends AbstractControllerTest {
     /**
      * Warning. Remember, delete or update only if DATE menu is FUTURE.
      */
+
+
+    @Autowired
+    MenuController controller;
 
     @Test
     void getAll() throws Exception {
@@ -81,6 +89,8 @@ class MenuControllerTest extends AbstractControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(content().json(readFile(PACKAGE_JSON + "menuExceptionNotFound.json"), true));
+
+        assertThrows(NotFoundException.class, () -> controller.getById(NOT_FOUND_ID));
     }
 
     @Test
@@ -102,6 +112,8 @@ class MenuControllerTest extends AbstractControllerTest {
                 .andExpect(status().isUnprocessableEntity())
                 .andDo(print())
                 .andExpect(content().json(readFile(PACKAGE_JSON + "menuExceptionDeleteNotTomorrow.json"), true));
+
+        assertThrows(DateException.class, () -> controller.delete(MENU_ID));
     }
 
     @Test

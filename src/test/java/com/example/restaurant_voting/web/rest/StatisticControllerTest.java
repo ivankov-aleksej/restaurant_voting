@@ -10,8 +10,6 @@ import java.time.LocalDate;
 
 import static com.example.restaurant_voting.TestUtil.userHttpBasic;
 import static com.example.restaurant_voting.UserTestData.USER1;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.mockStatic;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -24,12 +22,9 @@ class StatisticControllerTest extends AbstractControllerTest {
     private static final String PACKAGE_JSON = "statistic/";
 
     @Test
-    @SuppressWarnings("unchecked")
     void getCurrent() throws Exception {
-        assertNotEquals(CURRENT_DATE, DateUtil.getDate());
         try (MockedStatic mocked = mockStatic(DateUtil.class)) {
-            mocked.when(DateUtil::getDate).thenReturn(CURRENT_DATE);
-            assertEquals(CURRENT_DATE, DateUtil.getDate());
+            mockedDateUtil(mocked, CURRENT_DATE);
 
             perform(MockMvcRequestBuilders.get(REST_URL + "current")
                     .with(userHttpBasic(USER1)))
@@ -38,7 +33,6 @@ class StatisticControllerTest extends AbstractControllerTest {
                     .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                     .andExpect(content().json(readFile(PACKAGE_JSON + "statisticCurrentByDate.json"), true));
         }
-        assertNotEquals(CURRENT_DATE, DateUtil.getDate());
     }
 
     @Test
